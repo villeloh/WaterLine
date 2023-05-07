@@ -1,4 +1,5 @@
 module.exports = {
+  root: true,
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2021,
@@ -16,8 +17,8 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint'],
   rules: {
-    root: true,
-    'linebreak-style': 'off',
-    semi: 'off',
+    'linebreak-style': [2, 'unix'],
+    semi: [2, 'never'],
+    '@typescript-eslint/no-unused-vars': [1, {argsIgnorePattern: '^_'}],
   },
 }
