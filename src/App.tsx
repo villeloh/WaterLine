@@ -1,5 +1,4 @@
 import React from 'react'
-import { PermissionsAndroid } from 'react-native'
 import MapView, {
   enableLatestRenderer,
   PROVIDER_GOOGLE,
@@ -24,6 +23,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen'
 import { logMethodCall } from './utils/logging'
+import useLocation from './hooks/useLocation.android'
 
 type SectionProps = PropsWithChildren<{
   title: string
@@ -77,34 +77,19 @@ function App() {
     },
   })
 
-  async function requestLocationPermission() {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
-        {
-          title: 'Location Permission',
-          message: 'This app needs access to your location',
-          buttonPositive: 'OK',
-        },
-      )
-      return granted === PermissionsAndroid.RESULTS.GRANTED
-    } catch (err) {
-      console.warn(err)
-      return false
-    }
-  }
-  requestLocationPermission()
+  const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] = useLocation()
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
         style={styles.map}
+        mapType={'satellite'}
         showsUserLocation={true}
         showsMyLocationButton={true}
         region={{
-          latitude: 59.713977,
-          longitude: 19.0573428,
+          latitude: location?.latitude || 0,
+          longitude: location?.longitude || 0,
           latitudeDelta: 0.6,
           longitudeDelta: 0.3,
         }}
