@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Pressable, StyleSheet, Text } from 'react-native'
-import { AppColors } from '../AppConstants'
+import { AppColors } from '@/AppConstants'
 
 const styles = StyleSheet.create({
   button: {

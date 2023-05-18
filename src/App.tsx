@@ -5,9 +5,9 @@ import MapView, {
 } from 'react-native-maps'
 enableLatestRenderer()
 import { SafeAreaView, StyleSheet } from 'react-native'
-import useLocation from './hooks/useLocation.android'
-import AppMenu from './ui/AppMenu'
-import { MapType } from './state/Repository'
+import useLocation from '@/hooks/useLocation.android'
+import AppMenu from '@/ui/AppMenu'
+import { MapType } from '@/state/Repository'
 
 const styles = StyleSheet.create({
   container: {

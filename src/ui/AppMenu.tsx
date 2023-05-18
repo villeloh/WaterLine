@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { View, Switch, StyleSheet } from 'react-native'
-import Menu from '../components/menu/Menu'
-import MenuItem from '../components/menu/MenuItem'
-import UIButton from '../components/UIButton'
+import Menu from '@/components/menu/Menu'
+import MenuItem from '@/components/menu/MenuItem'
+import UIButton from '@/components/UIButton'
 
 type AppMenuProps = {
   onOpen: () => void
