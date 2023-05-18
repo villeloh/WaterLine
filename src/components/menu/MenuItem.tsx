@@ -3,11 +3,12 @@ import { View, Text, StyleSheet } from 'react-native'
 
 type MenuItemProps = {
   title: string
+  direction?: 'row' | 'column'
   children?: React.ReactNode
 }
 
 const styles = StyleSheet.create({
-  menuItem: {
+  menuItemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -25,15 +26,43 @@ const styles = StyleSheet.create({
   menuItemRight: {
     // TODO
   },
+
+  menuItemColumn: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 16,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  menuItemTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingBottom: 8,
+  },
+  menuItemBottom: {
+    // TODO
+  },
 })
 
-const MenuItem: React.FC<MenuItemProps> = ({ title, children }) => {
-  return (
-    <View style={styles.menuItem}>
+const MenuItem: React.FC<MenuItemProps> = ({
+  title,
+  direction = 'row',
+  children,
+}) => {
+  return direction === 'row' ? (
+    <View style={styles.menuItemRow}>
       <View style={styles.menuItemLeft}>
         <Text style={styles.menuItemText}>{title}</Text>
       </View>
       <View style={styles.menuItemRight}>{children}</View>
+    </View>
+  ) : (
+    <View style={styles.menuItemColumn}>
+      <View style={styles.menuItemTop}>
+        <Text style={styles.menuItemText}>{title}</Text>
+      </View>
+      <View style={styles.menuItemBottom}>{children}</View>
     </View>
   )
 }

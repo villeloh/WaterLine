@@ -2,61 +2,66 @@ import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service'
 
+type UseLocationProps = boolean
+
 type UseLocationReturnType = [
   location: GeoCoordinates | null,
-  start: () => number,
+  start: () => (() => void) | null,
   stop: () => void,
   isActive: boolean,
 ]
 
 // TODO: not sure if I'm doing everything correctly
 // TODO: weird issue where sometimes manual reorientation doesn't work
-const useLocation = (): UseLocationReturnType => {
+const useLocation = (
+  enabled: UseLocationProps = true,
+): UseLocationReturnType => {
   const [location, setLocation] = useState<GeoCoordinates | null>(null)
-  const [isActive, setIsActive] = useState(true)
-  const watchId = useRef(0)
-
-  useEffect(() => {
-    if (Platform.OS === 'android') {
-      _requestLocPermission()
-    }
-    watchId.current = start()
-    return () => {
-      if (watchId?.current !== 0) {
-        Geolocation.clearWatch(watchId.current)
-        // Geolocation.stopObserving() // gives an annoying warning in dev mode
-      }
-    }
-  }, [])
+  const [isActive, setIsActive] = useState(enabled)
+  const watchId = useRef<number | null>(null)
 
   const start = () => {
-    return Geolocation.watchPosition(
+    if (!enabled || watchId.current !== null) return null
+
+    setIsActive(true)
+
+    const id = Geolocation.watchPosition(
       (position) => {
+        console.log('POSITION: ', position)
         setLocation(position.coords)
-        setIsActive(true)
-        console.log('Position:', position.coords)
       },
       (error) => {
-        if (error.code === 2) {
-          console.log(error)
-        }
+        console.log(error)
       },
       {
         enableHighAccuracy: true,
-        distanceFilter: 0,
+        distanceFilter: 0, // distance in meters before a new location update
         interval: 5000,
         fastestInterval: 5000,
         forceRequestLocation: true,
         showLocationDialog: false,
       },
     )
+    watchId.current = id
+    return stop
   }
 
   const stop = () => {
-    Geolocation.clearWatch(watchId.current)
-    // Geolocation.stopObserving()
-    setIsActive(false)
+    if (watchId.current !== null) {
+      Geolocation.clearWatch(watchId.current)
+      watchId.current = null
+      setIsActive(false)
+      // Geolocation.stopObserving() // gives an annoying warning in dev mode
+    }
   }
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      _requestLocPermission()
+    }
+    start()
+    return stop
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return [location, start, stop, isActive]
 }

@@ -23,24 +23,41 @@ const styles = StyleSheet.create({
 })
 
 function App() {
-  const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] = useLocation()
-  const [mapType, setMapType] = useState<MapType>('standard')
+  // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
+  const [mapType, setMapType] = useState<MapType>('standard') // TODO: load it from settings
+  const [isGeoLocEnabled, setIsGeoLocEnabled] = useState(true) // TODO: load it from settings
+  const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
+    useLocation(isGeoLocEnabled)
   const mapRef = useRef<MapView>(null)
 
   useEffect(() => {
     const updatePosition = async () => {
-      const camera = await mapRef.current?.getCamera()
+      if (!isGeoLocActive) return
 
-      mapRef.current?.animateCamera({
-        ...camera,
-        center: {
-          latitude: location?.latitude || 0,
-          longitude: location?.longitude || 0,
-        },
-      })
+      try {
+        const camera = await mapRef?.current?.getCamera()
+
+        mapRef.current?.animateCamera({
+          ...camera,
+          center: {
+            latitude: location?.latitude || 0,
+            longitude: location?.longitude || 0,
+          },
+        })
+      } catch (error) {
+        console.log('CAMERA ERROR: ', error)
+      }
     }
     updatePosition()
-  }, [location])
+  }, [location, isGeoLocActive])
+
+  const onMenuClose = () => {
+    startGeoLoc()
+  }
+
+  const onMenuOpen = () => {
+    stopGeoLoc()
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -54,7 +71,7 @@ function App() {
         showsUserLocation={true}
         showsMyLocationButton={false}
       />
-      <AppMenu />
+      <AppMenu onClose={onMenuClose} onOpen={onMenuOpen} />
     </SafeAreaView>
   )
 }

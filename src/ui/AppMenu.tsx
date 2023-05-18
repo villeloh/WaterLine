@@ -1,31 +1,39 @@
 import React, { useState } from 'react'
-import { View, Button, Switch, StyleSheet } from 'react-native'
+import { View, Switch, StyleSheet } from 'react-native'
 import Menu from '../components/menu/Menu'
 import MenuItem from '../components/menu/MenuItem'
+import UIButton from '../components/UIButton'
+
+type AppMenuProps = {
+  onOpen: () => void
+  onClose: () => void
+}
 
 const styles = StyleSheet.create({
   menuButton: {
     position: 'absolute',
     top: 10,
     right: 10,
+    zIndex: 999,
   },
 })
 
-const AppMenu = () => {
-  const [isVisible, setIsVisible] = useState(false)
+const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [switchValue, setSwitchValue] = useState(false)
 
   const handleMenuPress = () => {
-    setIsVisible(!isVisible)
+    isOpen ? onClose() : onOpen()
+    setIsOpen(!isOpen)
   }
 
   return (
     <>
       <View style={styles.menuButton}>
-        <Button title={'MENU'} onPress={handleMenuPress} />
+        <UIButton onPress={handleMenuPress} text={'MENU'} />
       </View>
-      <Menu visible={isVisible} onRequestClose={handleMenuPress}>
-        <MenuItem title="Option 1">
+      <Menu isVisible={isOpen}>
+        <MenuItem title="Default Zoom Level" direction="column">
           <Switch value={switchValue} onValueChange={setSwitchValue} />
         </MenuItem>
         <MenuItem title="Option 2">

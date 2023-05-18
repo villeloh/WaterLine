@@ -1,30 +1,26 @@
 import React from 'react'
-import { View, Modal, StyleSheet } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 
 type MenuProps = {
-  visible: boolean
+  isVisible: boolean
   children?: React.ReactNode
-  onRequestClose: () => void
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
+    backgroundColor: '#FAFAFA',
+    width: '90%',
+    marginBottom: '5%',
+    marginTop: '16%',
+    padding: '5%',
+    borderRadius: 20,
   },
 })
 
-const Menu: React.FC<MenuProps> = ({ visible, children, onRequestClose }) => {
-  return (
-    <Modal
-      animationType="slide"
-      transparent={false}
-      visible={visible}
-      onRequestClose={onRequestClose}
-    >
-      <View style={styles.container}>{children}</View>
-    </Modal>
-  )
+const Menu: React.FC<MenuProps> = ({ isVisible, children }) => {
+  return isVisible ? <View style={styles.container}>{children}</View> : null
 }
 export default Menu
