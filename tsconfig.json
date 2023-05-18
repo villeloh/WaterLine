@@ -4,6 +4,11 @@
     "target": "es6",
     "module": "commonjs",
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["./src/*"]
+      // Add more paths here if needed
+    }
   }
 }

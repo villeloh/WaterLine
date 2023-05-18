@@ -1,13 +1,15 @@
-type Persistable = {
-  mapType?: string
+export type MapType = 'satellite' | 'standard'
+
+export type Persistable = {
+  mapType?: MapType
 }
 
-enum Key {
+export enum Setting {
   mapType = 'mapType',
 }
 
 class Repository {
-  saveLongTerm(key: Key, value: Persistable) {
+  saveLongTerm(key: Setting, value: Persistable) {
     //TODO
   }
 
