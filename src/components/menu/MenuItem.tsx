@@ -7,14 +7,40 @@ type MenuItemProps = {
   children?: React.ReactNode
 }
 
+const MenuItem: React.FC<MenuItemProps> = ({
+  title,
+  direction = 'row',
+  children,
+}) => {
+  return direction === 'row' ? (
+    <View style={styles.container}>
+      <View style={styles.menuItemRow}>
+        <View style={styles.menuItemLeft}>
+          <Text style={styles.menuItemText}>{title}</Text>
+        </View>
+        <View style={styles.menuItemRight}>{children}</View>
+      </View>
+      <View style={styles.divider} />
+    </View>
+  ) : (
+    <View style={styles.container}>
+      <View style={styles.menuItemColumn}>
+        <View style={styles.menuItemTop}>
+          <Text style={styles.menuItemText}>{title}</Text>
+        </View>
+        <View style={styles.menuItemBottom}>{children}</View>
+      </View>
+      <View style={styles.divider} />
+    </View>
+  )
+}
+
 const styles = StyleSheet.create({
   menuItemRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   menuItemLeft: {
     flexDirection: 'row',
@@ -32,8 +58,6 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
   },
   menuItemTop: {
     flexDirection: 'row',
@@ -43,27 +67,15 @@ const styles = StyleSheet.create({
   menuItemBottom: {
     // TODO
   },
+  divider: {
+    width: '80%',
+    borderBottomWidth: 1,
+    borderBottomColor: '#ddd',
+  },
+  container: {
+    width: '100%',
+    alignItems: 'center',
+  },
 })
 
-const MenuItem: React.FC<MenuItemProps> = ({
-  title,
-  direction = 'row',
-  children,
-}) => {
-  return direction === 'row' ? (
-    <View style={styles.menuItemRow}>
-      <View style={styles.menuItemLeft}>
-        <Text style={styles.menuItemText}>{title}</Text>
-      </View>
-      <View style={styles.menuItemRight}>{children}</View>
-    </View>
-  ) : (
-    <View style={styles.menuItemColumn}>
-      <View style={styles.menuItemTop}>
-        <Text style={styles.menuItemText}>{title}</Text>
-      </View>
-      <View style={styles.menuItemBottom}>{children}</View>
-    </View>
-  )
-}
 export default MenuItem

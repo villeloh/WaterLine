@@ -63,8 +63,8 @@ function App() {
     <SafeAreaView style={styles.container}>
       <MapView
         ref={mapRef}
-        onPanDrag={stopGeoLoc}
-        onRegionChangeComplete={startGeoLoc}
+        // onPanDrag={stopGeoLoc}
+        // onRegionChangeComplete={startGeoLoc} // fix race condition with menu actions
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         mapType={mapType}
