@@ -2,19 +2,6 @@ import React from 'react'
 import { View, Pressable, StyleSheet, Text } from 'react-native'
 import { AppColors } from '@/AppConstants'
 
-const styles = StyleSheet.create({
-  button: {
-    padding: 10,
-    borderRadius: 6,
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  pressed: { opacity: 0.5 },
-  notPressed: { opacity: 1 },
-  text: { fontSize: 18 },
-})
-
 type UIButtonProps = {
   onPress?: () => void
   text?: string
@@ -42,5 +29,18 @@ const UIButton = ({
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  button: {
+    padding: 10,
+    borderRadius: 6,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: { opacity: 0.5 },
+  notPressed: { opacity: 1 },
+  text: { fontSize: 18 },
+})
 
 export default UIButton

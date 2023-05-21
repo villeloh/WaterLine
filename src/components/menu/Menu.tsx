@@ -6,6 +6,10 @@ type MenuProps = {
   children?: React.ReactNode
 }
 
+const Menu: React.FC<MenuProps> = ({ isVisible, children }) => {
+  return isVisible ? <View style={styles.container}>{children}</View> : null
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -20,7 +24,4 @@ const styles = StyleSheet.create({
   },
 })
 
-const Menu: React.FC<MenuProps> = ({ isVisible, children }) => {
-  return isVisible ? <View style={styles.container}>{children}</View> : null
-}
 export default Menu

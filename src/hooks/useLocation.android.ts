@@ -6,32 +6,41 @@ type UseLocationProps = boolean
 
 type UseLocationReturnType = [
   location: GeoCoordinates | null,
-  start: () => (() => void) | null,
+  start: () => void,
   stop: () => void,
   isActive: boolean,
 ]
 
-// TODO: not sure if I'm doing everything correctly
-// TODO: weird issue where sometimes manual reorientation doesn't work
 const useLocation = (
-  enabled: UseLocationProps = true,
+  isEnabled: UseLocationProps = true,
 ): UseLocationReturnType => {
+  // TODO: maybe isActive could be removed somehow
   const [location, setLocation] = useState<GeoCoordinates | null>(null)
-  const [isActive, setIsActive] = useState(enabled)
+  const [isActive, setIsActive] = useState(isEnabled)
   const watchId = useRef<number | null>(null)
+  const [retryTimeoutId, setRetryTimeoutId] = useState<number | null>(null)
 
   const start = () => {
-    if (!enabled || watchId.current !== null) return null
-
-    setIsActive(true)
+    if (watchId.current !== null) return null
 
     const id = Geolocation.watchPosition(
       (position) => {
-        console.log('POSITION: ', position)
+        // console.log('POSITION: ', position)
         setLocation(position.coords)
+        setIsActive(true)
+        if (retryTimeoutId) {
+          clearTimeout(retryTimeoutId)
+          setRetryTimeoutId(null)
+        }
       },
       (error) => {
-        console.log(error)
+        console.log(error?.code)
+        // TODO: show a Toast about the error
+        stop()
+        // retry geoloc every 10 seconds
+        if (!retryTimeoutId) {
+          setRetryTimeoutId(setTimeout(start, 10000))
+        }
       },
       {
         enableHighAccuracy: true,
@@ -43,14 +52,13 @@ const useLocation = (
       },
     )
     watchId.current = id
-    return stop
   }
 
   const stop = () => {
+    setIsActive(false)
     if (watchId.current !== null) {
       Geolocation.clearWatch(watchId.current)
       watchId.current = null
-      setIsActive(false)
       // Geolocation.stopObserving() // gives an annoying warning in dev mode
     }
   }
@@ -59,9 +67,19 @@ const useLocation = (
     if (Platform.OS === 'android') {
       _requestLocPermission()
     }
-    start()
-    return stop
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+    if (!isEnabled) {
+      stop()
+      if (retryTimeoutId) clearTimeout(retryTimeoutId)
+      setRetryTimeoutId(null)
+    } else {
+      start()
+    }
+    return () => {
+      stop()
+      if (retryTimeoutId) clearTimeout(retryTimeoutId)
+      setRetryTimeoutId(null)
+    }
+  }, [isEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return [location, start, stop, isActive]
 }

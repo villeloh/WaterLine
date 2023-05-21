@@ -52,7 +52,6 @@ const styles = StyleSheet.create({
   menuItemRight: {
     // TODO
   },
-
   menuItemColumn: {
     flexDirection: 'column',
     justifyContent: 'space-between',
