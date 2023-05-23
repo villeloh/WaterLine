@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service'
+import useAppState from './useAppState.android'
 
 type UseLocationProps = boolean
 
@@ -61,7 +62,11 @@ const useLocation = (
       watchId.current = null
       // Geolocation.stopObserving() // gives an annoying warning in dev mode
     }
+    if (retryTimeoutId) clearTimeout(retryTimeoutId)
+    setRetryTimeoutId(null)
   }
+
+  useAppState(start, stop)
 
   useEffect(() => {
     if (Platform.OS === 'android') {
@@ -69,16 +74,10 @@ const useLocation = (
     }
     if (!isEnabled) {
       stop()
-      if (retryTimeoutId) clearTimeout(retryTimeoutId)
-      setRetryTimeoutId(null)
     } else {
       start()
     }
-    return () => {
-      stop()
-      if (retryTimeoutId) clearTimeout(retryTimeoutId)
-      setRetryTimeoutId(null)
-    }
+    return stop
   }, [isEnabled]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return [location, start, stop, isActive]

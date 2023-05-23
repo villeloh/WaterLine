@@ -1,18 +1,25 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react'
 import { View, Dimensions, Text, StyleSheet } from 'react-native'
-import { longDeltaToM } from '@/utils/calc'
+import { latDeltaToScreenM } from '@/utils/calc'
+import { Region } from 'react-native-maps'
 
 type ScaleProps = {
-  longDelta: number // longitude delta
-  latitude: number
+  region: Region | null
 }
 
-const Scale: React.FC<ScaleProps> = ({ longDelta, latitude }) => {
+const Scale: React.FC<ScaleProps> = ({ region }) => {
   const windowWidth = Dimensions.get('window').width
 
+  const { longitudeDelta = 0, latitudeDelta = 0 } = region ? region : {}
+
+  const margin = 20
+  const marginCorrectionRatio = (windowWidth - margin) / windowWidth
+
   const calculateScaleMax = () => {
-    return longDeltaToM(longDelta, latitude)
+    return (
+      latDeltaToScreenM(longitudeDelta, latitudeDelta) * marginCorrectionRatio
+    )
   }
 
   let scaleMax = calculateScaleMax()
@@ -23,7 +30,7 @@ const Scale: React.FC<ScaleProps> = ({ longDelta, latitude }) => {
   }
 
   return (
-    <View style={[styles.container, { width: windowWidth - 20 }]}>
+    <View style={[styles.container, { width: windowWidth - margin }]}>
       {/* Scale Bar */}
       <View style={{ flexDirection: 'row' }}>
         <View style={{ height: 10, width: 1, backgroundColor: 'black' }} />

@@ -19,15 +19,39 @@ export const kmBetween = (pointA: LatLng, pointB: LatLng) => {
   return distance.toFixed(1)
 }
 
-export const latDeltaToM = (latitudeDelta: number) => {
+// TODO: make it work with intermediate angles somehow
+export const latDeltaToScreenM = (longDelta: number, latDelta: number) => {
+  let angleRatio = longDelta / latDelta // 1.05 when phone is upright; 3.86 when it's horizontal
+  angleRatio = angleRatio / 2.1 // adjust for Mercator distortion
+  console.log(angleRatio)
+  if (angleRatio > 1.6) {
+    angleRatio = angleRatio / 2 // dirty hack to give correct display value when horizontal
+  }
+
   const oneDegreeOfLatitudeInM = 110574 // average, as the Earth is not a perfect sphere
-  return latitudeDelta * oneDegreeOfLatitudeInM
+  return latDelta * oneDegreeOfLatitudeInM * angleRatio
 }
 
-export const longDeltaToM = (longDelta: number, latitude: number) => {
+/*
+export const longDeltaToM = (
+  longDelta: number,
+  latDelta: number,
+  latitude: number,
+) => {
   const radianLat = latitude * (Math.PI / 180) // Convert latitude from degrees to radians
-  return Math.abs(111320 * Math.cos(radianLat) * longDelta)
-}
+
+  const ratio = longDelta / latDelta // 0.5 when phone is upright; 2.0 when it's horizontal
+
+  // the map's orientation (relative to the phone screen) affects things
+  const portraitRatio = 1
+  const landscapeRatio = 2
+  const currentRatio =
+    portraitRatio + (landscapeRatio - portraitRatio) * (adjustedAngle / 90.0)
+
+  const correctedLongDelta = longDelta * currentRatio
+
+  return Math.abs(111320 * Math.cos(radianLat) * correctedLongDelta)
+} */
 
 const _toRadians = (degrees: number) => {
   return degrees * (Math.PI / 180)

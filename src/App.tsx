@@ -54,21 +54,22 @@ function App() {
     <SafeAreaView style={styles.container}>
       <MapView
         ref={mapRef}
-        // onPanDrag={stopGeoLoc}
+        onPanDrag={(e) => {
+          // stopGeoLoc()
+        }}
         // onRegionChangeComplete={startGeoLoc} // TODO: fix race condition with menu actions
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         mapType={mapType}
         showsUserLocation={false}
         showsMyLocationButton={false}
-        onRegionChangeComplete={setRegion}
+        onRegionChangeComplete={(reg) => {
+          setRegion(reg)
+        }}
       >
         <LocationMarker location={location ?? { latitude: 0, longitude: 0 }} />
       </MapView>
-      <MapScale
-        longDelta={region?.longitudeDelta ?? 0}
-        latitude={region?.latitude ?? 0}
-      />
+      <MapScale region={region} />
       <AppMenu onClose={onMenuClose} onOpen={onMenuOpen} />
     </SafeAreaView>
   )

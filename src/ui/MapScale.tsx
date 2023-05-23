@@ -1,16 +1,16 @@
 import React from 'react'
 import Scale from '@/components/Scale'
 import { StyleSheet, View } from 'react-native'
+import { Region } from 'react-native-maps'
 
 type MapScaleProps = {
-  longDelta: number
-  latitude: number
+  region: Region | null
 }
 
-const MapScale: React.FC<MapScaleProps> = ({ longDelta, latitude }) => {
+const MapScale: React.FC<MapScaleProps> = ({ region }) => {
   return (
     <View style={styles.container}>
-      <Scale longDelta={longDelta} latitude={latitude} />
+      <Scale region={region} />
     </View>
   )
 }
