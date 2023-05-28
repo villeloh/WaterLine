@@ -19,17 +19,13 @@ export const kmBetween = (pointA: LatLng, pointB: LatLng) => {
   return distance.toFixed(1)
 }
 
-// TODO: make it work with intermediate angles somehow
 export const latDeltaToScreenM = (longDelta: number, latDelta: number) => {
-  let angleRatio = longDelta / latDelta // 1.05 when phone is upright; 3.86 when it's horizontal
-  angleRatio = angleRatio / 2.1 // adjust for Mercator distortion
-  console.log(angleRatio)
-  if (angleRatio > 1.6) {
-    angleRatio = angleRatio / 2 // dirty hack to give correct display value when horizontal
-  }
+  const angleRatio = longDelta / latDelta // 1.05 when phone is upright; 4.00 when it's horizontal
+  const multiplier = 0.1695 * angleRatio + 0.322025
+  const mysteryFactor = 0.9 // gives correct horizontal scale value; vertical is off by ~7 %
 
   const oneDegreeOfLatitudeInM = 110574 // average, as the Earth is not a perfect sphere
-  return latDelta * oneDegreeOfLatitudeInM * angleRatio
+  return latDelta * oneDegreeOfLatitudeInM * multiplier * mysteryFactor
 }
 
 /*
