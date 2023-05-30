@@ -1,24 +1,32 @@
 export type MapType = 'satellite' | 'standard'
 
-export type Persistable = {
-  mapType?: MapType
-}
-
 export enum Setting {
   mapType = 'mapType',
+  isMapLocked = 'isMapLocked',
+}
+
+type TypeMap = {
+  [Setting.mapType]: MapType
+  [Setting.isMapLocked]: boolean
 }
 
 class Repository {
-  saveLongTerm(key: Setting, value: Persistable) {
-    //TODO
+  tempData: Map<Setting, TypeMap[keyof TypeMap]> = new Map()
+
+  saveLongTerm = <T extends Setting>(key: T, value: TypeMap[T]) => {
+    // TODO:
   }
 
-  saveShortTerm() {
-    //TODO
+  saveShortTerm = <T extends Setting>(key: T, value: TypeMap[T]) => {
+    this.tempData.set(key, value)
   }
 
-  load() {
-    //TODO
+  save = <T extends Setting>(key: T, value: TypeMap[T]) => {
+    this.saveShortTerm(key, value)
+  }
+
+  load = <T extends Setting>(key: T): TypeMap[T] | undefined => {
+    return this.tempData.get(key) as TypeMap[T] | undefined
   }
 }
 

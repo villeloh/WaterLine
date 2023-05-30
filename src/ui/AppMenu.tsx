@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, Switch, StyleSheet } from 'react-native'
 import Menu from '@/components/menu/Menu'
 import MenuItem from '@/components/menu/MenuItem'
 import UIButton from '@/components/UIButton'
 import UISlider from '@/components/UISlider'
+import { Repo, Setting as S } from '@/state/Repository'
 
 type AppMenuProps = {
   onOpen: () => void
@@ -13,7 +14,20 @@ type AppMenuProps = {
 const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [switchValue, setSwitchValue] = useState(false)
-  const initialZoomLevel = 5 // TODO: get it from the Repo
+  const initialZoomLevel = 5 // TODO: get it from the Repo / store it there
+
+  const [isMapLocked, setIsMapLocked] = useState(false)
+
+  useEffect(() => {
+    const initialValue = Repo.load(S.isMapLocked) ?? false
+    setIsMapLocked(initialValue)
+  }, [])
+
+  const handleMapLockSwitch = () => {
+    const newValue = !isMapLocked
+    setIsMapLocked(newValue)
+    Repo.save(S.isMapLocked, newValue)
+  }
 
   const handleMenuPress = () => {
     isOpen ? onClose() : onOpen()
@@ -29,6 +43,12 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
       <View style={styles.menuButton}>
         <UIButton onPress={handleMenuPress} text={'MENU'} />
       </View>
+      <Switch
+        style={styles.lockSwitch}
+        value={isMapLocked}
+        onValueChange={handleMapLockSwitch}
+        thumbColor={isMapLocked ? '#e32d2d' : 'green'}
+      />
       <Menu isVisible={isOpen}>
         <MenuItem title="Default Zoom Level" direction="column">
           <UISlider
@@ -54,6 +74,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     right: 10,
+  },
+  lockSwitch: {
+    position: 'absolute',
+    top: 15,
+    right: 90,
+    transform: [{ scaleX: 1.3 }, { scaleY: 1 }],
   },
 })
 
