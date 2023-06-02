@@ -1,3 +1,6 @@
+import { DataSource } from '@/state/DataSource'
+import AsyncStorageDS from '@/state/AsyncStorageDS'
+
 export type MapType = 'satellite' | 'standard'
 
 export enum Setting {
@@ -5,29 +8,38 @@ export enum Setting {
   isMapLocked = 'isMapLocked',
 }
 
-type TypeMap = {
+export type TypeMap = {
   [Setting.mapType]: MapType
   [Setting.isMapLocked]: boolean
 }
 
 class Repository {
+  dataSource: DataSource
+  constructor(dataSource: DataSource) {
+    this.dataSource = dataSource
+  }
+
   tempData: Map<Setting, TypeMap[keyof TypeMap]> = new Map()
 
   saveLongTerm = <T extends Setting>(key: T, value: TypeMap[T]) => {
     // TODO:
   }
 
-  saveShortTerm = <T extends Setting>(key: T, value: TypeMap[T]) => {
-    this.tempData.set(key, value)
+  saveShortTerm = async <T extends Setting>(
+    key: T,
+    value: TypeMap[T],
+  ): Promise<boolean> => {
+    return this.dataSource.saveData(key, value)
   }
 
   save = <T extends Setting>(key: T, value: TypeMap[T]) => {
     this.saveShortTerm(key, value)
   }
 
-  load = <T extends Setting>(key: T): TypeMap[T] | undefined => {
-    return this.tempData.get(key) as TypeMap[T] | undefined
+  load = async <T extends Setting>(key: T): Promise<TypeMap[T] | null> => {
+    return await this.dataSource.loadData(key)
   }
 }
 
-export const Repo = new Repository()
+const dataSource = new AsyncStorageDS()
+export const Repo = new Repository(dataSource)
