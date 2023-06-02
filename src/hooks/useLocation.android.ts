@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
 import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service'
 import useAppState from './useAppState.android'
+import { useData } from './useData.android'
+import { Setting as S } from '@/state/Repository'
+import { LocUpdateDistance, LocUpdateInterval } from '@/AppConstants'
 
 type UseLocationProps = boolean
 
@@ -20,6 +23,16 @@ const useLocation = (
   const [isActive, setIsActive] = useState(isEnabled)
   const watchId = useRef<number | null>(null)
   const [retryTimeoutId, setRetryTimeoutId] = useState<number | null>(null)
+
+  const [updateInterval] = useData(
+    S.locUpdateInterval,
+    LocUpdateInterval.default,
+  )
+
+  const [updateDistance] = useData(
+    S.locUpdateDistance,
+    LocUpdateDistance.default,
+  )
 
   const start = () => {
     if (watchId.current !== null) return null
@@ -45,9 +58,9 @@ const useLocation = (
       },
       {
         enableHighAccuracy: true,
-        distanceFilter: 0, // distance in meters before a new location update
-        interval: 5000,
-        fastestInterval: 5000,
+        distanceFilter: updateDistance, // distance in meters before a new location update
+        interval: updateInterval * 1000,
+        fastestInterval: updateInterval * 1000,
         forceRequestLocation: true,
         showLocationDialog: false,
       },

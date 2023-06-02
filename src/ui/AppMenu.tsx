@@ -1,10 +1,17 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { View, Switch, StyleSheet } from 'react-native'
 import Menu from '@/components/menu/Menu'
 import MenuItem from '@/components/menu/MenuItem'
 import UIButton from '@/components/UIButton'
 import UISlider from '@/components/UISlider'
-import { Repo, Setting as S } from '@/state/Repository'
+import { Setting as S } from '@/state/Repository'
+import { useData } from '@/hooks/useData.android'
+import {
+  IsMapLocked,
+  LocUpdateDistance,
+  LocUpdateInterval,
+  ZoomLevel,
+} from '@/AppConstants'
 
 type AppMenuProps = {
   onOpen: () => void
@@ -13,20 +20,25 @@ type AppMenuProps = {
 
 const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [switchValue, setSwitchValue] = useState(false)
-  const initialZoomLevel = 5 // TODO: get it from the Repo / store it there
+  const [zoomLevel, setZoomLevel] = useData(S.zoomLevel, ZoomLevel.default)
 
-  const [isMapLocked, setIsMapLocked] = useState(false)
-
-  useEffect(() => {
-    const initialValue = Repo.load(S.isMapLocked) ?? false
-    setIsMapLocked(initialValue)
-  }, [])
+  // TODO: *optionally* abstract away the defaultValue argument somehow
+  // TODO: if there are too many settings, move the state to dedicated components
+  const [locUpdateInterval, setLocUpdateInterval] = useData(
+    S.locUpdateInterval,
+    LocUpdateInterval.default,
+  )
+  const [locUpdateDistance, setLocUpdateDistance] = useData(
+    S.locUpdateDistance,
+    LocUpdateDistance.default,
+  )
+  const [isMapLocked, setIsMapLocked] = useData(
+    S.isMapLocked,
+    IsMapLocked.default,
+  )
 
   const handleMapLockSwitch = () => {
-    const newValue = !isMapLocked
-    setIsMapLocked(newValue)
-    Repo.save(S.isMapLocked, newValue)
+    setIsMapLocked(!isMapLocked)
   }
 
   const handleMenuPress = () => {
@@ -35,7 +47,7 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
   }
 
   const handleSliderValueChange = (newValue: number) => {
-    console.log(newValue)
+    setZoomLevel(newValue)
   }
 
   return (
@@ -46,23 +58,17 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
       <Switch
         style={styles.lockSwitch}
         value={isMapLocked}
-        onValueChange={handleMapLockSwitch}
         thumbColor={isMapLocked ? '#e32d2d' : 'green'}
+        onValueChange={handleMapLockSwitch}
       />
       <Menu isVisible={isOpen}>
         <MenuItem title="Default Zoom Level" direction="column">
           <UISlider
-            minValue={1}
-            maxValue={10}
-            initialValue={initialZoomLevel}
+            minValue={ZoomLevel.min}
+            maxValue={ZoomLevel.max}
+            initialValue={zoomLevel}
             onValueChange={handleSliderValueChange}
           />
-        </MenuItem>
-        <MenuItem title="Option 2">
-          <Switch value={switchValue} onValueChange={setSwitchValue} />
-        </MenuItem>
-        <MenuItem title="Option 3">
-          <Switch value={switchValue} onValueChange={setSwitchValue} />
         </MenuItem>
       </Menu>
     </>

@@ -8,15 +8,17 @@ enableLatestRenderer()
 import { SafeAreaView, StyleSheet } from 'react-native'
 import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
-import { MapType } from '@/state/Repository'
-import MapScale from './ui/MapScale'
-import LocationMarker from './ui/LocationMarker'
+import { Setting as S } from '@/state/Repository'
+import MapScale from '@/ui/MapScale'
+import LocationMarker from '@/ui/LocationMarker'
+import { useData } from './hooks/useData.android'
+import { Region as R } from './AppConstants'
 
 function App() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
-  const [mapType, setMapType] = useState<MapType>('standard') // TODO: load it from settings
-  const [isGeoLocEnabled, setIsGeoLocEnabled] = useState(true) // TODO: load it from settings
-  const [region, setRegion] = useState<Region | null>(null)
+  const [mapType, setMapType] = useData(S.mapType, 'standard')
+  const [isGeoLocEnabled, setIsGeoLocEnabled] = useData(S.isGeoLocEnabled, true)
+  const [region, setRegion] = useData(S.region, R.default)
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isGeoLocEnabled)
   const mapRef = useRef<MapView>(null)
@@ -61,8 +63,8 @@ function App() {
         provider={PROVIDER_GOOGLE}
         style={styles.map}
         mapType={mapType}
-        showsUserLocation={false}
-        showsMyLocationButton={false}
+        showsUserLocation={false} // we use a custom marker
+        showsMyLocationButton={false} // automatic
         onRegionChangeComplete={(reg) => {
           setRegion(reg)
         }}
