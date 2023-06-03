@@ -1,26 +1,36 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import MapView, {
   enableLatestRenderer,
+  MapPressEvent,
   PROVIDER_GOOGLE,
-  Region,
 } from 'react-native-maps'
 enableLatestRenderer()
 import { SafeAreaView, StyleSheet } from 'react-native'
 import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
-import { Setting as S } from '@/state/Repository'
+import { Setting as S, TripData as TD } from '@/state/Repository'
+import { useData } from '@/hooks/useData.android'
+import { MapRegion, IsMapLocked } from '@/AppConstants'
+import LockSwitch from '@/ui/LockSwitch'
+import MapRoute from '@/ui/MapRoute'
 import MapScale from '@/ui/MapScale'
 import LocationMarker from '@/ui/LocationMarker'
-import { useData } from './hooks/useData.android'
-import { Region as R } from './AppConstants'
+import RouteData from '@/state/model/RouteData'
+import { useState } from 'react'
+import Dialog from './components/Dialog'
 
 function App() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
   const [mapType, setMapType] = useData(S.mapType, 'standard')
-  const [isGeoLocEnabled, setIsGeoLocEnabled] = useData(S.isGeoLocEnabled, true)
-  const [region, setRegion] = useData(S.region, R.default)
+  const [isMapLocked, setIsMapLocked] = useData(
+    S.isMapLocked,
+    IsMapLocked.default,
+  )
+  const [routeData, setRouteData] = useData(TD.route, new RouteData([]))
+  const [region, setRegion] = useData(S.mapRegion, MapRegion.default)
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
-    useLocation(isGeoLocEnabled)
+    useLocation(isMapLocked)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const mapRef = useRef<MapView>(null)
 
   useEffect(() => {
@@ -52,8 +62,39 @@ function App() {
     stopGeoLoc()
   }
 
+  const onMapPress = (e: MapPressEvent) => {
+    // e.stopPropagation()
+    const isMapPress = e.nativeEvent.action === 'press'
+    if (!isMapPress) return // marker press
+
+    const { latitude, longitude } = e.nativeEvent.coordinate
+
+    setRouteData(
+      new RouteData([...routeData.coordinates, { latitude, longitude }]),
+    )
+  }
+
+  const onMapLockSwitch = (newValue: boolean) => {
+    console.log('locked: ', newValue)
+    setIsMapLocked(newValue)
+  }
+
+  const onMapRoutePress = () => {
+    console.log('called onMapRoutePress')
+
+    setShowDeleteDialog(!showDeleteDialog)
+  }
+
+  const deleteMapRoute = () => {
+    setRouteData(new RouteData([]))
+  }
+
+  const deleteDialogText = 'Delete route ?'
+
   return (
     <SafeAreaView style={styles.container}>
+      <AppMenu onClose={onMenuClose} onOpen={onMenuOpen} />
+      <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
       <MapView
         ref={mapRef}
         onPanDrag={(e) => {
@@ -68,11 +109,29 @@ function App() {
         onRegionChangeComplete={(reg) => {
           setRegion(reg)
         }}
+        onPress={!isMapLocked ? onMapPress : undefined}
       >
-        <LocationMarker location={location ?? { latitude: 0, longitude: 0 }} />
+        {location && <LocationMarker location={location} />}
+        <MapRoute
+          isEditable={!isMapLocked}
+          routeData={routeData}
+          onPress={!isMapLocked ? onMapRoutePress : undefined}
+        />
       </MapView>
       <MapScale region={region} />
-      <AppMenu onClose={onMenuClose} onOpen={onMenuOpen} />
+      {showDeleteDialog && (
+        <Dialog
+          text={deleteDialogText}
+          yesButtonText={'YES'}
+          noButtonText={'NO'}
+          onYesButtonClick={() => {
+            deleteMapRoute()
+            setShowDeleteDialog(false)
+          }}
+          onNoButtonClick={() => setShowDeleteDialog(false)}
+          position={{ top: 0.4, left: 0.21 }}
+        />
+      )}
     </SafeAreaView>
   )
 }

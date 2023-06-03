@@ -1,3 +1,5 @@
+import { LineCapType, LineJoinType } from 'react-native-maps'
+
 export const AppColors = {
   btnColorPrimary: 'blue',
   btnTextColorPrimary: 'white',
@@ -22,15 +24,22 @@ export const LocUpdateDistance = {
 }
 
 export const IsMapLocked = {
-  default: false,
+  default: true,
 }
 
 // TODO: make it correspond to the Swedish east coast; ideally, make it user-definable
-export const Region = {
+export const MapRegion = {
   default: {
     latitude: 0,
     longitude: 0,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
   },
+}
+
+export const MapRoute = {
+  lineWidth: 3, // px
+  lineColor: 'orange',
+  lineCap: 'butt' as LineCapType,
+  lineJoin: 'miter' as LineJoinType,
 }

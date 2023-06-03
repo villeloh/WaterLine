@@ -17,10 +17,8 @@ const useAppState = (
       ) {
         onEnterBackground()
       }
-
       setAppState(nextAppState)
     }
-
     const sub = AppState.addEventListener('change', handleAppStateChange)
 
     return () => {
