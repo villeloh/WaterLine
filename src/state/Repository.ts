@@ -5,7 +5,8 @@ import Route from '@/state/model/RouteData'
 
 export type Persistable = Setting | TripData
 
-export type MapType = 'satellite' | 'standard'
+export const MAP_TYPES = ['satellite', 'standard'] as const
+export type MapType = (typeof MAP_TYPES)[number]
 
 // TODO: once finalized, move these to a Settings class
 export enum Setting {

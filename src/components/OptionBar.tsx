@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 
 type OptionBarProps = {
-  options: string[]
+  options: readonly string[]
+  initialSelection: string
 }
 
-const OptionBar: React.FC<OptionBarProps> = ({ options }) => {
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+const OptionBar: React.FC<OptionBarProps> = ({ options, initialSelection }) => {
+  const [selectedOption, setSelectedOption] = useState<string>(initialSelection)
 
   return (
     <View style={styles.container}>
@@ -41,9 +42,10 @@ const styles = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     color: '#333',
+    lineHeight: 20,
   },
   buttonSelected: {
-    backgroundColor: '#bbb',
+    backgroundColor: '#52f295',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
