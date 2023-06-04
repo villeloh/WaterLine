@@ -7,6 +7,13 @@ const useAppState = (
 ) => {
   const [appState, setAppState] = useState(AppState.currentState)
 
+  // initial db data load
+  useEffect(() => {
+    if (appState === 'active') {
+      onEnterForeground()
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
   useEffect(() => {
     const handleAppStateChange = (nextAppState: AppStateStatus) => {
       if (appState.match(/inactive|background/) && nextAppState === 'active') {
@@ -19,6 +26,7 @@ const useAppState = (
       }
       setAppState(nextAppState)
     }
+
     const sub = AppState.addEventListener('change', handleAppStateChange)
 
     return () => {
