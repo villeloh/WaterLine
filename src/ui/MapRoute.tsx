@@ -17,7 +17,6 @@ const MapRoute: React.FC<MapRouteProps> = ({
   isEditable,
   onPress,
 }) => {
-  console.log('editable: ', isEditable)
   return (
     <>
       <Polyline
@@ -36,7 +35,7 @@ const MapRoute: React.FC<MapRouteProps> = ({
           id={'' + index}
           location={coord}
           isDraggable={isEditable}
-          isTappable={isEditable}
+          isTappable={true}
         />
       ))}
     </>

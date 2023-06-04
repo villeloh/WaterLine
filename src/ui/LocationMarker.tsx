@@ -3,7 +3,7 @@ import { Animated, StyleSheet } from 'react-native'
 import { LatLng, Marker } from 'react-native-maps'
 
 type LocationMarkerProps = {
-  location: LatLng
+  location: LatLng | null
 }
 
 const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
@@ -26,18 +26,18 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
   }
 
   // to stop too frequent updates
-  const truncatedLat = Number(location?.latitude.toFixed(4)) || 0
-  const truncatedLong = Number(location?.longitude.toFixed(4)) || 0
+  const truncatedLat = Number(location?.latitude.toFixed(3)) || 0
+  const truncatedLong = Number(location?.longitude.toFixed(3)) || 0
 
   useEffect(() => {
     animateMarker()
   }, [truncatedLat, truncatedLong]) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return (
+  return location !== null ? (
     <Marker coordinate={location}>
       <Animated.View style={[styles.markerStyle, { opacity: opacityAnim }]} />
     </Marker>
-  )
+  ) : null
 }
 
 const styles = StyleSheet.create({

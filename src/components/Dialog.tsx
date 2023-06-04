@@ -8,6 +8,7 @@ type DialogProps = {
   onYesButtonClick: () => void
   onNoButtonClick: () => void
   position: { top: number; left: number }
+  isVisible: boolean
 }
 
 const Dialog: FC<DialogProps> = ({
@@ -17,11 +18,12 @@ const Dialog: FC<DialogProps> = ({
   onYesButtonClick,
   onNoButtonClick,
   position: { top, left },
+  isVisible,
 }) => {
   const { width, height } = Dimensions.get('window')
   const styles = getStyles(top, left, width, height)
 
-  return (
+  return isVisible ? (
     <View style={styles.dialogBox}>
       <Text style={styles.text}>{text}</Text>
       <View style={styles.buttonContainer}>
@@ -33,7 +35,7 @@ const Dialog: FC<DialogProps> = ({
         </View>
       </View>
     </View>
-  )
+  ) : null
 }
 
 const getStyles = (

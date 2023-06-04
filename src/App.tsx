@@ -75,13 +75,10 @@ function App() {
   }
 
   const onMapLockSwitch = (newValue: boolean) => {
-    console.log('locked: ', newValue)
     setIsMapLocked(newValue)
   }
 
   const onMapRoutePress = () => {
-    console.log('called onMapRoutePress')
-
     setShowDeleteDialog(!showDeleteDialog)
   }
 
@@ -111,7 +108,7 @@ function App() {
         }}
         onPress={!isMapLocked ? onMapPress : undefined}
       >
-        {location && <LocationMarker location={location} />}
+        <LocationMarker location={location} />
         <MapRoute
           isEditable={!isMapLocked}
           routeData={routeData}
@@ -119,19 +116,18 @@ function App() {
         />
       </MapView>
       <MapScale region={region} />
-      {showDeleteDialog && (
-        <Dialog
-          text={deleteDialogText}
-          yesButtonText={'YES'}
-          noButtonText={'NO'}
-          onYesButtonClick={() => {
-            deleteMapRoute()
-            setShowDeleteDialog(false)
-          }}
-          onNoButtonClick={() => setShowDeleteDialog(false)}
-          position={{ top: 0.4, left: 0.21 }}
-        />
-      )}
+      <Dialog
+        isVisible={showDeleteDialog}
+        text={deleteDialogText}
+        yesButtonText={'YES'}
+        noButtonText={'NO'}
+        onYesButtonClick={() => {
+          deleteMapRoute()
+          setShowDeleteDialog(false)
+        }}
+        onNoButtonClick={() => setShowDeleteDialog(false)}
+        position={{ top: 0.4, left: 0.21 }}
+      />
     </SafeAreaView>
   )
 }
