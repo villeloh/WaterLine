@@ -112,6 +112,7 @@ function App() {
         <MapRoute
           isEditable={!isMapLocked}
           routeData={routeData}
+          setRouteData={setRouteData}
           onPress={!isMapLocked ? onMapRoutePress : undefined}
         />
       </MapView>

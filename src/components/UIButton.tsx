@@ -9,6 +9,7 @@ type UIButtonProps = {
   textColor?: string
 }
 
+// TODO: use TouchableOpacity (looks a lot better than the custom ripple)
 const UIButton = ({
   onPress,
   text = '',
