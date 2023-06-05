@@ -4,10 +4,20 @@ import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
 type OptionBarProps = {
   options: readonly string[]
   initialSelection: string
+  onSelectOption: (option: string) => void
 }
 
-const OptionBar: React.FC<OptionBarProps> = ({ options, initialSelection }) => {
+const OptionBar: React.FC<OptionBarProps> = ({
+  options,
+  initialSelection,
+  onSelectOption,
+}) => {
   const [selectedOption, setSelectedOption] = useState<string>(initialSelection)
+
+  const handleSelectOption = (option: string) => {
+    setSelectedOption(option)
+    onSelectOption(option)
+  }
 
   return (
     <View style={styles.container}>
@@ -18,7 +28,7 @@ const OptionBar: React.FC<OptionBarProps> = ({ options, initialSelection }) => {
             styles.button,
             selectedOption === option && styles.buttonSelected,
           ]}
-          onPress={() => setSelectedOption(option)}
+          onPress={() => handleSelectOption(option)}
         >
           <Text style={styles.buttonText}>{option}</Text>
         </TouchableOpacity>

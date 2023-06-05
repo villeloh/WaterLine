@@ -24,7 +24,7 @@ type MapMarkerProps = {
 const MapMarker: React.FC<MapMarkerProps> = ({
   id,
   location,
-  distanceFromPrev = 0,
+  distanceFromPrev = 1,
   totalDistance = 0,
   isDraggable = true,
   isTappable = false,
@@ -37,11 +37,11 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   const totalDistanceText =
     totalDistance > 0 ? `From start: ${formatDistance(totalDistance)}` : null
 
-  const [showTotal, setShowTotal] = useState(false)
+  const [showTotal, setShowTotal] = useState(totalDistance > 0)
 
   const handlePress = (event: MarkerPressEvent) => {
     if (onPress) onPress(event)
-    if (distanceFromPrev > 0) setShowTotal(!showTotal)
+    if (distanceFromPrev > 0 && totalDistance > 0) setShowTotal(!showTotal)
   }
 
   return (

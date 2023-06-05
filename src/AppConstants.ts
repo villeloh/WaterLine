@@ -1,4 +1,5 @@
 import { LineCapType, LineJoinType } from 'react-native-maps'
+import { MapType } from './state/Repository'
 
 export const AppColors = {
   btnColorPrimary: 'blue',
@@ -36,6 +37,8 @@ export const MapRegion = {
     longitudeDelta: 0.1,
   },
 }
+
+export const DefaultMapType = 'standard' as MapType
 
 export const MapRoute = {
   lineWidth: 3, // px

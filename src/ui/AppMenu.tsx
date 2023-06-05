@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native'
 import Menu from '@/components/menu/Menu'
 import MenuItem from '@/components/menu/MenuItem'
 import UIButton from '@/components/UIButton'
-import { MAP_TYPES, Setting as S } from '@/state/Repository'
+import { MAP_TYPES, MapType, Setting as S } from '@/state/Repository'
 import { useData } from '@/hooks/useData.android'
 import { LocUpdateDistance, LocUpdateInterval, ZoomLevel } from '@/AppConstants'
 import MapTypeOptions from '@/ui/MapTypeOptions'
@@ -11,9 +11,10 @@ import MapTypeOptions from '@/ui/MapTypeOptions'
 type AppMenuProps = {
   onOpen: () => void
   onClose: () => void
+  mapProps: { mapType: MapType; setMapType: (newType: MapType) => void }
 }
 
-const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
+const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [zoomLevel, setZoomLevel] = useData(S.zoomLevel, ZoomLevel.default)
 
@@ -45,7 +46,13 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
       <Menu isVisible={isOpen}>
         <MenuItem title={'Map Type:  '} direction={'row'}>
           {/* TODO: give it state via a singleton form of useData() */}
-          <MapTypeOptions options={MAP_TYPES} initialSelection={'standard'} />
+          <MapTypeOptions
+            options={MAP_TYPES}
+            initialSelection={mapProps.mapType}
+            onSelectOption={(option: string) =>
+              mapProps.setMapType(option as MapType)
+            }
+          />
         </MenuItem>
       </Menu>
     </>

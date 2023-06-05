@@ -58,7 +58,7 @@ const getStyles = (
       shadowOpacity: 0.25,
       shadowRadius: 4,
       elevation: 5,
-      width: width * 0.6,
+      width: width * 0.7,
       position: 'absolute',
       top: height * topPercent,
       left: width * leftPercent,
