@@ -10,6 +10,7 @@ import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
 import { MapRoute as MR } from '@/AppConstants'
 import RouteData from '@/state/model/RouteData'
 import MapMarker from './MapMarker'
+import { metersBetween } from '@/utils/calc'
 
 type MapRouteProps = {
   isEditable: boolean
@@ -28,6 +29,17 @@ const MapRoute: React.FC<MapRouteProps> = ({
   onMarkerDrag,
   onMarkerDragEnd,
 }) => {
+  const totalDistanceSoFar = (index: number) => {
+    if (index === 0) return 0
+
+    const coords = routeData.coordinates
+    let total = 0
+    for (let i = 0; i < index; i++) {
+      total += metersBetween(coords[i], coords[i + 1])
+    }
+    return total
+  }
+
   return (
     <>
       <Polyline
@@ -45,8 +57,15 @@ const MapRoute: React.FC<MapRouteProps> = ({
           key={index}
           id={'' + index}
           location={coord}
+          distanceFromPrev={
+            index > 0
+              ? metersBetween(routeData.coordinates[index - 1], coord)
+              : 0
+          }
+          totalDistance={totalDistanceSoFar(index)}
           isDraggable={isEditable}
           isTappable={true}
+          isExpandable={!isEditable} // expanding interferes with deletion
           onDrag={onMarkerDrag ? onMarkerDrag : undefined}
           onDragEnd={
             onMarkerDragEnd

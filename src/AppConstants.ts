@@ -41,7 +41,7 @@ export const MapRegion = {
 export const DefaultMapType = 'standard' as MapType
 
 export const MapRoute = {
-  lineWidth: 3, // px
+  lineWidth: 4, // px
   lineColor: 'orange',
   lineCap: 'butt' as LineCapType,
   lineJoin: 'miter' as LineJoinType,

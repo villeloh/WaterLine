@@ -16,6 +16,7 @@ type MapMarkerProps = {
   totalDistance?: number
   isDraggable?: boolean
   isTappable?: boolean
+  isExpandable?: boolean
   onDrag?: (event: MarkerDragEvent) => void
   onDragEnd?: (event: MarkerDragStartEndEvent) => void
   onPress?: (event: MarkerPressEvent) => void
@@ -24,29 +25,33 @@ type MapMarkerProps = {
 const MapMarker: React.FC<MapMarkerProps> = ({
   id,
   location,
-  distanceFromPrev = 1,
+  distanceFromPrev = 0,
   totalDistance = 0,
   isDraggable = true,
   isTappable = false,
+  isExpandable = true,
   onDrag,
   onDragEnd,
   onPress,
 }) => {
-  const distanceText =
-    distanceFromPrev > 0 ? formatDistance(distanceFromPrev) : 'START'
+  const distanceFromPrevText =
+    distanceFromPrev > 0
+      ? `From previous: ${formatDistance(distanceFromPrev)}`
+      : 'START'
   const totalDistanceText =
-    totalDistance > 0 ? `From start: ${formatDistance(totalDistance)}` : null
+    totalDistance > 0 ? formatDistance(totalDistance) : 'START'
 
-  const [showTotal, setShowTotal] = useState(totalDistance > 0)
+  const [showDistFromPrev, setShowDistFromPrev] = useState(false)
 
   const handlePress = (event: MarkerPressEvent) => {
     if (onPress) onPress(event)
-    if (distanceFromPrev > 0 && totalDistance > 0) setShowTotal(!showTotal)
+    if (isExpandable && distanceFromPrev > 0)
+      setShowDistFromPrev(!showDistFromPrev)
   }
 
   return (
     <Marker
-      key={showTotal ? 'totalVisible' : 'totalHidden'}
+      key={showDistFromPrev ? 'prevVisible' : 'prevHidden'}
       identifier={id}
       coordinate={location}
       draggable={isDraggable}
@@ -57,13 +62,13 @@ const MapMarker: React.FC<MapMarkerProps> = ({
       tracksViewChanges={false} // 'true' decreases performance
     >
       <View style={styles.container}>
-        <View style={[styles.balloon, showTotal && { height: 52 }]}>
-          {showTotal && (
+        <View style={[styles.balloon, showDistFromPrev && { height: 52 }]}>
+          {showDistFromPrev && (
             <Text style={[styles.text, { marginBottom: 2 }]}>
-              {totalDistanceText}
+              {distanceFromPrevText}
             </Text>
           )}
-          <Text style={styles.text}>{distanceText}</Text>
+          <Text style={styles.text}>{totalDistanceText}</Text>
         </View>
         <View style={styles.triangle} />
       </View>
@@ -106,7 +111,9 @@ const styles = StyleSheet.create({
 })
 
 const formatDistance = (distance: number): string => {
-  return distance > 999 ? `${(distance / 1000).toFixed(1)} km` : `${distance} m`
+  return distance > 999
+    ? `${(distance / 1000).toFixed(1)} km`
+    : `${distance.toFixed(0)} m`
 }
 
 export default MapMarker

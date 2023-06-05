@@ -1,7 +1,7 @@
 import { LatLng } from 'react-native-maps'
 
-export const kmBetween = (pointA: LatLng, pointB: LatLng) => {
-  const radiusOfEarthInKm = 6371
+export const metersBetween = (pointA: LatLng, pointB: LatLng) => {
+  const radiusOfEarthInM = 6371000
   const latDifference = _toRadians(pointB.latitude - pointA.latitude)
   const longDifference = _toRadians(pointB.longitude - pointA.longitude)
 
@@ -15,8 +15,7 @@ export const kmBetween = (pointA: LatLng, pointB: LatLng) => {
 
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
 
-  const distance = radiusOfEarthInKm * c
-  return distance.toFixed(1)
+  return radiusOfEarthInM * c
 }
 
 export const latDeltaToScreenM = (longDelta: number, latDelta: number) => {
