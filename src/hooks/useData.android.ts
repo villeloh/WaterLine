@@ -2,18 +2,23 @@ import { useState } from 'react'
 import { Persistable, TypeMap, Repo } from '@/state/Repository'
 import useAppState from '@/hooks/useAppState.android'
 
-// a 'spiced up' useState that writes to the db as well as local state
+// a 'spiced up' useState that writes to the Repo as well as local state
 // TODO: make it into a singleton (with Context), so that the data can be referenced from anywhere
+// TODO: handle errors somehow (maybe retry once and/or show a Toast?)
 export const useData = <T extends Persistable>(
   key: T,
   defaultValue: TypeMap[T],
-): [TypeMap[T], (value: TypeMap[T]) => Promise<void>, boolean] => {
+): [TypeMap[T], (value: TypeMap[T]) => Promise<void>, () => void, boolean] => {
   const [data, setData] = useState<TypeMap[T]>(defaultValue)
   const [isLoading, setIsLoading] = useState(true)
 
-  // TODO: figure out how to save data to the db intermittently
-  const onEnterBackground = () => {
+  // manual save to repo for special situations
+  const saveToRepo = () => {
     Repo.save(key, data)
+  }
+
+  const onEnterBackground = () => {
+    saveToRepo()
   }
 
   const onEnterForeground = async () => {
@@ -28,5 +33,5 @@ export const useData = <T extends Persistable>(
     setData(value)
   }
 
-  return [data, saveData, isLoading]
+  return [data, saveData, saveToRepo, isLoading]
 }

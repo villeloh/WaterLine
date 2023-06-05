@@ -26,13 +26,22 @@ import Dialog from '@/components/Dialog'
 
 function App() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
-  const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
-  const [isMapLocked, setIsMapLocked] = useData(
+  const [mapType, setMapType, persistMapType] = useData(
+    S.mapType,
+    DefaultMapType,
+  )
+  const [isMapLocked, setIsMapLocked, persistIsMapLocked] = useData(
     S.isMapLocked,
     IsMapLocked.default,
   )
-  const [routeData, setRouteData] = useData(TD.route, new RouteData([]))
-  const [region, setRegion] = useData(S.mapRegion, MapRegion.default)
+  const [routeData, setRouteData, persistRouteData] = useData(
+    TD.route,
+    new RouteData([]),
+  )
+  const [region, setRegion, persistRegion] = useData(
+    S.mapRegion,
+    MapRegion.default,
+  )
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isMapLocked)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -91,6 +100,14 @@ function App() {
 
   const onMapLockSwitch = (newValue: boolean) => {
     setIsMapLocked(newValue)
+    // persist data to Repo on map lock (most convenient occasion)
+    // TODO: refactor useData as a singleton to make things less convoluted
+    if (newValue) {
+      persistIsMapLocked()
+      persistMapType()
+      persistRegion()
+      persistRouteData()
+    }
   }
 
   const onMapRoutePress = () => {
@@ -111,7 +128,6 @@ function App() {
 
   const deleteMarker = (id: number) => {
     const newCoords = routeData.coordinates.filter((_, index) => index !== id)
-    console.log(newCoords.length)
     setRouteData(new RouteData(newCoords))
     setSelectedMarkerId(null) // Reset selected marker
   }
