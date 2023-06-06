@@ -28,21 +28,24 @@ export const IsMapLocked = {
   default: true,
 }
 
-// TODO: make it correspond to the Swedish east coast; ideally, make it user-definable
+// Swedish east coast. TODO: ideally, make it user-definable
 export const MapRegion = {
   default: {
-    latitude: 0,
-    longitude: 0,
-    latitudeDelta: 0.1,
-    longitudeDelta: 0.1,
+    latitude: 59.917136332885434,
+    longitude: 18.736544754356146,
+    latitudeDelta: 1.705026578056625,
+    longitudeDelta: 1.7051516845822334,
   },
 }
 
 export const DefaultMapType = 'standard' as MapType
 
 export const MapRoute = {
-  lineWidth: 4, // px
-  lineColor: 'orange',
+  lineWidth: { min: 1, default: 4, max: 10 },
+  lineColor: {
+    default: 'orange',
+    choices: ['orange', 'red', 'black', 'white'],
+  },
   lineCap: 'butt' as LineCapType,
   lineJoin: 'miter' as LineJoinType,
 }

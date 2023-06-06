@@ -17,6 +17,8 @@ export enum Setting {
   zoomLevel = 'zoomLevel',
   locUpdateInterval = 'locUpdateInterval',
   locUpdateDistance = 'locUpdateDistance',
+  lineWidth = 'lineWidth',
+  lineColor = 'lineColor',
 }
 
 export enum TripData {
@@ -31,6 +33,8 @@ export type TypeMap = {
   [Setting.zoomLevel]: number
   [Setting.locUpdateInterval]: number
   [Setting.locUpdateDistance]: number
+  [Setting.lineWidth]: number
+  [Setting.lineColor]: string
   [TripData.route]: Route
 }
 

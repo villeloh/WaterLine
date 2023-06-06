@@ -1,6 +1,5 @@
 import React from 'react'
 import {
-  MarkerDragEvent,
   MarkerDragStartEndEvent,
   MarkerPressEvent,
   Polyline,
@@ -15,6 +14,8 @@ import { metersBetween } from '@/utils/calc'
 type MapRouteProps = {
   isEditable: boolean
   routeData: RouteData
+  lineColor: string
+  lineWidth: number
   onPress?: (event: PolylinePressEvent) => void
   onMarkerPress?: (event: MarkerPressEvent) => void
   onMarkerDragStart?: (event: MarkerDragStartEndEvent) => void
@@ -24,6 +25,8 @@ type MapRouteProps = {
 const MapRoute: React.FC<MapRouteProps> = ({
   routeData,
   isEditable,
+  lineColor,
+  lineWidth,
   onPress,
   onMarkerPress,
   onMarkerDragStart,
@@ -46,8 +49,8 @@ const MapRoute: React.FC<MapRouteProps> = ({
         coordinates={routeData.coordinates}
         tappable={isEditable}
         onPress={onPress}
-        strokeWidth={MR.lineWidth}
-        strokeColor={MR.lineColor}
+        strokeWidth={lineWidth}
+        strokeColor={lineColor}
         lineCap={MR.lineCap}
         lineJoin={MR.lineJoin}
         geodesic={false} // Google Maps uses Mercator, so it should make sense

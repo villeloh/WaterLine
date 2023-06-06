@@ -16,7 +16,12 @@ import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
 import { Setting as S, TripData as TD } from '@/state/Repository'
 import { useData } from '@/hooks/useData.android'
-import { MapRegion, IsMapLocked, DefaultMapType } from '@/AppConstants'
+import {
+  MapRegion,
+  IsMapLocked,
+  DefaultMapType,
+  MapRoute as MR,
+} from '@/AppConstants'
 import LockSwitch from '@/ui/LockSwitch'
 import MapRoute from '@/ui/MapRoute'
 import MapScale from '@/ui/MapScale'
@@ -42,6 +47,15 @@ function App() {
     S.mapRegion,
     MapRegion.default,
   )
+  const [lineWidth, setLineWidth, persistLineWidth] = useData(
+    S.lineWidth,
+    MR.lineWidth.default,
+  )
+  const [lineColor, setLineColor, persistLineColor] = useData(
+    S.lineColor,
+    MR.lineColor.default,
+  )
+
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isMapLocked)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
@@ -107,6 +121,8 @@ function App() {
       persistMapType()
       persistRegion()
       persistRouteData()
+      persistLineWidth()
+      persistLineColor()
     }
   }
 
@@ -163,6 +179,8 @@ function App() {
           <MapRoute
             isEditable={!isMapLocked}
             routeData={routeData}
+            lineColor={lineColor}
+            lineWidth={lineWidth}
             onPress={!isMapLocked ? onMapRoutePress : undefined}
             onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
             onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
@@ -194,7 +212,14 @@ function App() {
       <AppMenu
         onClose={onMenuClose}
         onOpen={onMenuOpen}
-        mapProps={{ mapType, setMapType }}
+        mapProps={{
+          mapType,
+          setMapType,
+          lineColor,
+          setLineColor,
+          lineWidth,
+          setLineWidth,
+        }}
       />
     </SafeAreaView>
   )

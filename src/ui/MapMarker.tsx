@@ -3,7 +3,6 @@ import React, { useState } from 'react'
 import {
   LatLng,
   Marker,
-  MarkerDragEvent,
   MarkerDragStartEndEvent,
   MarkerPressEvent,
 } from 'react-native-maps'
