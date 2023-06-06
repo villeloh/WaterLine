@@ -21,6 +21,8 @@ import {
   IsMapLocked,
   DefaultMapType,
   MapRoute as MR,
+  LocUpdateInterval as LocUI,
+  LocUpdateDistance as LocUD,
 } from '@/AppConstants'
 import LockSwitch from '@/ui/LockSwitch'
 import MapRoute from '@/ui/MapRoute'
@@ -29,8 +31,10 @@ import LocationMarker from '@/ui/LocationMarker'
 import RouteData from '@/state/model/RouteData'
 import Dialog from '@/components/Dialog'
 
+// TODO: the app component is getting bloated with all the logic; modularize it somehow
 function App() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
+  // TODO: *optionally* abstract away the defaultValue argument somehow
   const [mapType, setMapType, persistMapType] = useData(
     S.mapType,
     DefaultMapType,
@@ -54,6 +58,16 @@ function App() {
   const [lineColor, setLineColor, persistLineColor] = useData(
     S.lineColor,
     MR.lineColor.default,
+  )
+
+  // TODO: hook these up to the menu
+  const [locUpdateInterval, setLocUpdateInterval] = useData(
+    S.locUpdateInterval,
+    LocUI.default,
+  )
+  const [locUpdateDistance, setLocUpdateDistance] = useData(
+    S.locUpdateDistance,
+    LocUD.default,
   )
 
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =

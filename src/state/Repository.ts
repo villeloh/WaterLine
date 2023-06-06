@@ -14,7 +14,6 @@ export enum Setting {
   isMapLocked = 'isMapLocked',
   isGeoLocEnabled = 'isGeoLocEnabled',
   mapRegion = 'mapRegion',
-  zoomLevel = 'zoomLevel',
   locUpdateInterval = 'locUpdateInterval',
   locUpdateDistance = 'locUpdateDistance',
   lineWidth = 'lineWidth',
@@ -30,7 +29,6 @@ export type TypeMap = {
   [Setting.isMapLocked]: boolean
   [Setting.isGeoLocEnabled]: boolean
   [Setting.mapRegion]: Region
-  [Setting.zoomLevel]: number
   [Setting.locUpdateInterval]: number
   [Setting.locUpdateDistance]: number
   [Setting.lineWidth]: number

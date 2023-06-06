@@ -4,13 +4,7 @@ import Menu from '@/components/menu/Menu'
 import MenuItem from '@/components/menu/MenuItem'
 import UIButton from '@/components/UIButton'
 import { MAP_TYPES, MapType, Setting as S } from '@/state/Repository'
-import { useData } from '@/hooks/useData.android'
-import {
-  LocUpdateDistance,
-  LocUpdateInterval,
-  ZoomLevel,
-  MapRoute as MR,
-} from '@/AppConstants'
+import { MapRoute as MR } from '@/AppConstants'
 import MapTypeOptions from '@/ui/MapTypeOptions'
 import UISlider from '@/components/UISlider'
 import ColorRow from '@/components/ColorRow'
@@ -30,26 +24,10 @@ type AppMenuProps = {
 
 const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
   const [isOpen, setIsOpen] = useState(false)
-  const [zoomLevel, setZoomLevel] = useData(S.zoomLevel, ZoomLevel.default)
-
-  // TODO: *optionally* abstract away the defaultValue argument somehow
-  // TODO: if there are too many settings, move the state to dedicated components
-  const [locUpdateInterval, setLocUpdateInterval] = useData(
-    S.locUpdateInterval,
-    LocUpdateInterval.default,
-  )
-  const [locUpdateDistance, setLocUpdateDistance] = useData(
-    S.locUpdateDistance,
-    LocUpdateDistance.default,
-  )
 
   const handleMenuPress = () => {
     isOpen ? onClose() : onOpen()
     setIsOpen(!isOpen)
-  }
-
-  const handleSliderValueChange = (newValue: number) => {
-    setZoomLevel(newValue)
   }
 
   return (

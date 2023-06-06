@@ -7,12 +7,6 @@ export const AppColors = {
   bgGrey: '#dcdee0',
 }
 
-export const ZoomLevel = {
-  min: 1, // relative value
-  default: 5,
-  max: 10,
-}
-
 export const LocUpdateInterval = {
   min: 1, // seconds
   default: 10,
