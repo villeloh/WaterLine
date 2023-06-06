@@ -44,8 +44,6 @@ class Repository {
     this.dataSource = dataSource
   }
 
-  tempData: Map<Setting, TypeMap[keyof TypeMap]> = new Map()
-
   saveLongTerm = <T extends Persistable>(key: T, value: TypeMap[T]) => {
     // TODO: save it to Realm maybe ??
   }
