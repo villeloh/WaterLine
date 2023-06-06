@@ -1,17 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
 import MapView, {
   enableLatestRenderer,
+  LongPressEvent,
   MapPressEvent,
   MarkerDragStartEndEvent,
   MarkerPressEvent,
   PROVIDER_GOOGLE,
 } from 'react-native-maps'
 enableLatestRenderer()
-import {
-  SafeAreaView,
-  StyleSheet,
-  TouchableWithoutFeedback,
-} from 'react-native'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
 import { Setting as S, TripData as TD } from '@/state/Repository'
@@ -21,6 +18,7 @@ import {
   IsMapLocked,
   DefaultMapType,
   MapRoute as MR,
+  MapMeasureLine as MML,
   LocUpdateInterval as LocUI,
   LocUpdateDistance as LocUD,
 } from '@/AppConstants'
@@ -30,6 +28,7 @@ import MapScale from '@/ui/MapScale'
 import LocationMarker from '@/ui/LocationMarker'
 import RouteData from '@/state/model/RouteData'
 import Dialog from '@/components/Dialog'
+import MapMeasureLine from '@/ui/MapMeasureLine'
 
 // TODO: the app component is getting bloated with all the logic; modularize it somehow
 function App() {
@@ -47,6 +46,11 @@ function App() {
     TD.route,
     new RouteData([]),
   )
+  const [
+    measureLineEndCoord,
+    setMeasureLineEndCoord,
+    persistMeasureLineEndCoord,
+  ] = useData(TD.measureLineEndCoord, null)
   const [region, setRegion, persistRegion] = useData(
     S.mapRegion,
     MapRegion.default,
@@ -119,10 +123,17 @@ function App() {
     )
   }
 
-  const onMapLongPress = () => {
+  const onMeasureLinePress = () => {
+    setShowDeleteDialog(true)
+    setDeleteTarget('measureLine')
+  }
+
+  const onMapLongPress = (event: LongPressEvent) => {
     if (selectedMarkerId !== null) {
       setShowDeleteDialog(true)
       setDeleteTarget('marker')
+    } else {
+      setMeasureLineEndCoord(event.nativeEvent.coordinate)
     }
   }
 
@@ -137,6 +148,7 @@ function App() {
       persistRouteData()
       persistLineWidth()
       persistLineColor()
+      persistMeasureLineEndCoord()
     }
   }
 
@@ -156,6 +168,10 @@ function App() {
     setRouteData(new RouteData([]))
   }
 
+  const deleteMeasureLine = () => {
+    setMeasureLineEndCoord(null)
+  }
+
   const deleteMarker = (id: number) => {
     const newCoords = routeData.coordinates.filter((_, index) => index !== id)
     setRouteData(new RouteData(newCoords))
@@ -173,55 +189,83 @@ function App() {
     setRouteData(new RouteData(coords))
   }
 
+  const onMeasureLineMarkerDragEnd = (event: MarkerDragStartEndEvent) => {
+    setMeasureLineEndCoord(event.nativeEvent.coordinate)
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
-      <TouchableWithoutFeedback onLongPress={onMapLongPress}>
-        <MapView
-          ref={mapRef}
-          provider={PROVIDER_GOOGLE}
-          style={styles.map}
-          mapType={mapType}
-          initialRegion={region}
-          showsUserLocation={false} // we use a custom marker
-          showsMyLocationButton={false} // automatic
-          onRegionChangeComplete={(reg) => {
-            setRegion(reg)
-          }}
-          onPress={!isMapLocked ? onMapPress : undefined}
-        >
-          <LocationMarker location={location} />
-          <MapRoute
-            isEditable={!isMapLocked}
-            routeData={routeData}
-            lineColor={lineColor}
-            lineWidth={lineWidth}
-            onPress={!isMapLocked ? onMapRoutePress : undefined}
-            onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
-            onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
-            onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
-          />
-        </MapView>
-      </TouchableWithoutFeedback>
+      <MapView
+        ref={mapRef}
+        provider={PROVIDER_GOOGLE}
+        style={styles.map}
+        mapType={mapType}
+        initialRegion={region}
+        showsUserLocation={false} // we use a custom marker
+        showsMyLocationButton={false} // automatic
+        onRegionChangeComplete={(reg) => {
+          setRegion(reg)
+        }}
+        onPress={!isMapLocked ? onMapPress : undefined}
+        onLongPress={onMapLongPress}
+      >
+        <LocationMarker location={location} />
+        <MapRoute
+          isEditable={!isMapLocked}
+          routeData={routeData}
+          lineColor={lineColor}
+          lineWidth={lineWidth}
+          onPress={!isMapLocked ? onMapRoutePress : undefined}
+          onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
+          onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
+          onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
+        />
+        <MapMeasureLine
+          startCoord={
+            measureLineEndCoord
+              ? {
+                  latitude: location?.latitude ?? 0,
+                  longitude: location?.longitude ?? 0,
+                }
+              : null
+          }
+          endCoord={measureLineEndCoord}
+          lineColor={MML.lineColor.default}
+          lineWidth={lineWidth}
+          onPress={onMeasureLinePress}
+          onMarkerDragEnd={onMeasureLineMarkerDragEnd}
+        />
+      </MapView>
       <MapScale region={region} />
       <Dialog
         isVisible={showDeleteDialog}
-        text={
-          deleteTarget === 'route'
-            ? 'DELETE ROUTE ?'
-            : `DELETE MARKER # ${
-                selectedMarkerId !== null ? selectedMarkerId + 1 : '[null]'
-              } ?`
-        }
+        text={(() => {
+          if (deleteTarget === 'route') return 'DELETE ROUTE ?'
+          else if (deleteTarget === 'marker')
+            return `DELETE MARKER # ${
+              selectedMarkerId !== null ? selectedMarkerId + 1 : ''
+            } ?`
+          else return 'DELETE LINE ?'
+        })()}
         yesButtonText={'YES'}
         noButtonText={'NO'}
         onYesButtonClick={() => {
-          deleteTarget === 'route'
-            ? deleteMapRoute()
-            : selectedMarkerId !== null && deleteMarker(selectedMarkerId)
+          if (deleteTarget === 'route') {
+            deleteMapRoute()
+          } else if (deleteTarget === 'marker') {
+            selectedMarkerId !== null && deleteMarker(selectedMarkerId)
+          } else {
+            deleteMeasureLine()
+          }
           setShowDeleteDialog(false)
         }}
-        onNoButtonClick={() => setShowDeleteDialog(false)}
+        onNoButtonClick={() => {
+          setShowDeleteDialog(false)
+          if (deleteTarget === 'marker') {
+            setSelectedMarkerId(null)
+          }
+        }}
         position={{ top: 0.4, left: 0.21 }}
       />
       <AppMenu

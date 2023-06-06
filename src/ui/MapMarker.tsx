@@ -16,6 +16,7 @@ type MapMarkerProps = {
   isDraggable?: boolean
   isTappable?: boolean
   isExpandable?: boolean
+  color?: string
   onDragStart?: (event: MarkerDragStartEndEvent) => void
   onDragEnd?: (event: MarkerDragStartEndEvent) => void
   onPress?: (event: MarkerPressEvent) => void
@@ -29,6 +30,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   isDraggable = true,
   isTappable = false,
   isExpandable = true,
+  color = 'red',
   onDragStart,
   onDragEnd,
   onPress,
@@ -61,7 +63,13 @@ const MapMarker: React.FC<MapMarkerProps> = ({
       tracksViewChanges={false} // 'true' decreases performance
     >
       <View style={styles.container}>
-        <View style={[styles.balloon, showDistFromPrev && { height: 52 }]}>
+        <View
+          style={[
+            styles.balloon,
+            showDistFromPrev && { height: 52 },
+            { backgroundColor: color },
+          ]}
+        >
           {showDistFromPrev && (
             <Text style={[styles.text, { marginBottom: 2 }]}>
               {distanceFromPrevText}
@@ -69,7 +77,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
           )}
           <Text style={styles.text}>{totalDistanceText}</Text>
         </View>
-        <View style={styles.triangle} />
+        <View style={[styles.triangle, { borderTopColor: color }]} />
       </View>
     </Marker>
   )
@@ -85,7 +93,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   balloon: {
-    backgroundColor: 'red',
     borderRadius: 20,
     paddingHorizontal: 6,
     height: 26,
@@ -104,7 +111,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderLeftColor: 'transparent',
     borderRightColor: 'transparent',
-    borderTopColor: 'red',
     marginTop: -4,
   },
 })

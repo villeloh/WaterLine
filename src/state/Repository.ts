@@ -1,6 +1,6 @@
 import { DataSource } from '@/state/DataSource'
 import AsyncStorageDS from '@/state/AsyncStorageDS'
-import { Region } from 'react-native-maps'
+import { LatLng, Region } from 'react-native-maps'
 import Route from '@/state/model/RouteData'
 
 export type Persistable = Setting | TripData
@@ -22,6 +22,7 @@ export enum Setting {
 
 export enum TripData {
   route = 'route',
+  measureLineEndCoord = 'measureLineEndCoord',
 }
 
 export type TypeMap = {
@@ -34,6 +35,7 @@ export type TypeMap = {
   [Setting.lineWidth]: number
   [Setting.lineColor]: string
   [TripData.route]: Route
+  [TripData.measureLineEndCoord]: LatLng | null
 }
 
 class Repository {

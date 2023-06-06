@@ -44,3 +44,11 @@ export const MapRoute = {
   lineCap: 'butt' as LineCapType,
   lineJoin: 'miter' as LineJoinType,
 }
+
+export const MapMeasureLine = {
+  lineWidth: { default: 4 },
+  lineColor: { default: 'purple' },
+  markerColor: { default: 'purple' },
+  lineCap: 'butt' as LineCapType,
+  lineJoin: 'miter' as LineJoinType,
+}

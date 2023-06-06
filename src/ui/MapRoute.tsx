@@ -8,7 +8,7 @@ import {
 import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
 import { MapRoute as MR } from '@/AppConstants'
 import RouteData from '@/state/model/RouteData'
-import MapMarker from './MapMarker'
+import MapMarker from '@/ui/MapMarker'
 import { metersBetween } from '@/utils/calc'
 
 type MapRouteProps = {
@@ -48,7 +48,7 @@ const MapRoute: React.FC<MapRouteProps> = ({
       <Polyline
         coordinates={routeData.coordinates}
         tappable={isEditable}
-        onPress={onPress}
+        onPress={onPress ? onPress : undefined}
         strokeWidth={lineWidth}
         strokeColor={lineColor}
         lineCap={MR.lineCap}
