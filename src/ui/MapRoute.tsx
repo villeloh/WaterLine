@@ -17,7 +17,7 @@ type MapRouteProps = {
   routeData: RouteData
   onPress?: (event: PolylinePressEvent) => void
   onMarkerPress?: (event: MarkerPressEvent) => void
-  onMarkerDrag?: (event: MarkerDragEvent) => void
+  onMarkerDragStart?: (event: MarkerDragStartEndEvent) => void
   onMarkerDragEnd?: (event: MarkerDragStartEndEvent, index: number) => void
 }
 
@@ -26,7 +26,7 @@ const MapRoute: React.FC<MapRouteProps> = ({
   isEditable,
   onPress,
   onMarkerPress,
-  onMarkerDrag,
+  onMarkerDragStart,
   onMarkerDragEnd,
 }) => {
   const totalDistanceSoFar = (index: number) => {
@@ -66,7 +66,7 @@ const MapRoute: React.FC<MapRouteProps> = ({
           isDraggable={isEditable}
           isTappable={true}
           isExpandable={!isEditable} // expanding interferes with deletion
-          onDrag={onMarkerDrag ? onMarkerDrag : undefined}
+          onDragStart={onMarkerDragStart ? onMarkerDragStart : undefined}
           onDragEnd={
             onMarkerDragEnd
               ? (event) => onMarkerDragEnd(event, index)

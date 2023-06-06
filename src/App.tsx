@@ -132,7 +132,7 @@ function App() {
     setSelectedMarkerId(null) // Reset selected marker
   }
 
-  const onMarkerDrag = () => {
+  const onMarkerDragStart = () => {
     setSelectedMarkerId(null) // prevent delete dialog
   }
 
@@ -145,19 +145,10 @@ function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AppMenu
-        onClose={onMenuClose}
-        onOpen={onMenuOpen}
-        mapProps={{ mapType, setMapType }}
-      />
       <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
       <TouchableWithoutFeedback onLongPress={onMapLongPress}>
         <MapView
           ref={mapRef}
-          onPanDrag={(e) => {
-            // stopGeoLoc()
-          }}
-          // onRegionChangeComplete={startGeoLoc} // TODO: fix race condition with menu actions
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           mapType={mapType}
@@ -174,7 +165,7 @@ function App() {
             routeData={routeData}
             onPress={!isMapLocked ? onMapRoutePress : undefined}
             onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
-            onMarkerDrag={!isMapLocked ? onMarkerDrag : undefined}
+            onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
             onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
           />
         </MapView>
@@ -199,6 +190,11 @@ function App() {
         }}
         onNoButtonClick={() => setShowDeleteDialog(false)}
         position={{ top: 0.4, left: 0.21 }}
+      />
+      <AppMenu
+        onClose={onMenuClose}
+        onOpen={onMenuOpen}
+        mapProps={{ mapType, setMapType }}
       />
     </SafeAreaView>
   )

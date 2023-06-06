@@ -1,8 +1,8 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react'
 import { View, Dimensions, Text, StyleSheet } from 'react-native'
-import { latDeltaToScreenM } from '@/utils/calc'
 import { Region } from 'react-native-maps'
+import { latDeltaToScreenM } from '@/utils/calc'
 
 type ScaleProps = {
   region: Region | null
@@ -16,6 +16,7 @@ const Scale: React.FC<ScaleProps> = ({ region }) => {
   const margin = 20
   const marginCorrectionRatio = (windowWidth - margin) / windowWidth
 
+  // TODO: in theory, metersBetween() should be useable here, but it gives unreasonable values
   const calculateScaleMax = () => {
     return (
       latDeltaToScreenM(longitudeDelta, latitudeDelta) * marginCorrectionRatio

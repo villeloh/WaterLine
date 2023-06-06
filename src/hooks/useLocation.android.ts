@@ -15,9 +15,7 @@ type UseLocationReturnType = [
   isActive: boolean,
 ]
 
-const useLocation = (
-  isEnabled: UseLocationProps = true,
-): UseLocationReturnType => {
+const useLocation = (isEnabled: UseLocationProps): UseLocationReturnType => {
   // TODO: maybe isActive could be removed somehow
   const [location, setLocation] = useState<GeoCoordinates | null>(null)
   const [isActive, setIsActive] = useState(isEnabled)
@@ -35,7 +33,7 @@ const useLocation = (
   )
 
   const start = () => {
-    if (watchId.current !== null) return null
+    if (!isEnabled || watchId.current !== null) return null
 
     const id = Geolocation.watchPosition(
       (position) => {
@@ -80,6 +78,17 @@ const useLocation = (
   }
 
   useAppState(start, stop)
+
+  useEffect(() => {
+    if (Platform.OS === 'android') {
+      _requestLocPermission()
+    }
+    if (!isEnabled) {
+      stop()
+    } else {
+      start()
+    }
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (Platform.OS === 'android') {

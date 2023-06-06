@@ -17,7 +17,7 @@ type MapMarkerProps = {
   isDraggable?: boolean
   isTappable?: boolean
   isExpandable?: boolean
-  onDrag?: (event: MarkerDragEvent) => void
+  onDragStart?: (event: MarkerDragStartEndEvent) => void
   onDragEnd?: (event: MarkerDragStartEndEvent) => void
   onPress?: (event: MarkerPressEvent) => void
 }
@@ -30,7 +30,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   isDraggable = true,
   isTappable = false,
   isExpandable = true,
-  onDrag,
+  onDragStart,
   onDragEnd,
   onPress,
 }) => {
@@ -56,7 +56,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
       coordinate={location}
       draggable={isDraggable}
       tappable={isTappable}
-      onDrag={onDrag}
+      onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onPress={isTappable ? handlePress : undefined}
       tracksViewChanges={false} // 'true' decreases performance
