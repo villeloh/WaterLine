@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   box: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
     borderRadius: 5,
   },
   boxWrapper: {
-    width: 54, // Box size + double border width + double gap width
-    height: 54,
+    width: 42,
+    height: 42,
     borderRadius: 6,
     borderWidth: 3,
     margin: 5,

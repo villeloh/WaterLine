@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
+import { AppColors } from '@/AppConstants'
 
 type MenuItemProps = {
   title: string
@@ -20,7 +21,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
         </View>
         <View style={styles.menuItemRight}>{children}</View>
       </View>
-      <View style={styles.divider} />
     </View>
   ) : (
     <View style={styles.container}>
@@ -30,7 +30,6 @@ const MenuItem: React.FC<MenuItemProps> = ({
         </View>
         <View style={styles.menuItemBottom}>{children}</View>
       </View>
-      <View style={styles.divider} />
     </View>
   )
 }
@@ -66,14 +65,12 @@ const styles = StyleSheet.create({
   menuItemBottom: {
     // TODO
   },
-  divider: {
-    width: '80%',
-    borderBottomWidth: 2,
-    borderBottomColor: 'gray',
-  },
   container: {
     width: '100%',
     alignItems: 'center',
+    backgroundColor: AppColors.bgGrey,
+    borderRadius: 5,
+    marginBottom: 8,
   },
 })
 

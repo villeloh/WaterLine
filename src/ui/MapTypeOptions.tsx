@@ -1,5 +1,5 @@
 import React from 'react'
-import OptionBar from '@/components/OptionBar'
+import OptionRow from '@/components/OptionRow'
 import { MAP_TYPES, MapType } from '@/state/Repository'
 
 type MapTypeOptionsProps = {
@@ -14,7 +14,7 @@ const MapTypeOptions: React.FC<MapTypeOptionsProps> = ({
   onSelectOption,
 }) => {
   return (
-    <OptionBar
+    <OptionRow
       options={options}
       initialSelection={initialSelection}
       onSelectOption={onSelectOption}

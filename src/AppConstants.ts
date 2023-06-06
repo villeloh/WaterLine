@@ -4,6 +4,7 @@ import { MapType } from './state/Repository'
 export const AppColors = {
   btnColorPrimary: 'blue',
   btnTextColorPrimary: 'white',
+  bgGrey: '#dcdee0',
 }
 
 export const ZoomLevel = {

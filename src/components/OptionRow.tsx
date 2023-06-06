@@ -1,13 +1,14 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
+import { AppColors } from '@/AppConstants'
 
-type OptionBarProps = {
+type OptionRowProps = {
   options: readonly string[]
   initialSelection: string
   onSelectOption: (option: string) => void
 }
 
-const OptionBar: React.FC<OptionBarProps> = ({
+const OptionRow: React.FC<OptionRowProps> = ({
   options,
   initialSelection,
   onSelectOption,
@@ -37,6 +38,7 @@ const OptionBar: React.FC<OptionBarProps> = ({
   )
 }
 
+// TODO: it should take itthe bg colors as props
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
   },
   button: {
     padding: 10,
-    backgroundColor: '#ddd',
+    backgroundColor: AppColors.bgGrey,
     borderRadius: 5,
     marginHorizontal: 5,
   },
@@ -67,4 +69,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default OptionBar
+export default OptionRow
