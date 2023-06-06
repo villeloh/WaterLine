@@ -168,6 +168,7 @@ function App() {
           provider={PROVIDER_GOOGLE}
           style={styles.map}
           mapType={mapType}
+          initialRegion={region}
           showsUserLocation={false} // we use a custom marker
           showsMyLocationButton={false} // automatic
           onRegionChangeComplete={(reg) => {

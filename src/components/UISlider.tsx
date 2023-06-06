@@ -33,9 +33,9 @@ const UISlider: React.FC<UISliderProps> = ({
         step={step}
         value={value}
         onValueChange={handleValueChange}
-        thumbTintColor="blue"
-        minimumTrackTintColor="#0000ff"
-        maximumTrackTintColor="#000000"
+        thumbTintColor="red"
+        minimumTrackTintColor="red"
+        maximumTrackTintColor="green"
       />
       <Text>{value}</Text>
     </View>

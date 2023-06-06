@@ -68,7 +68,7 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
             }
           />
         </MenuItem>
-        <MenuItem title={'Line width'} direction={'column'}>
+        <MenuItem title={'Line width:'} direction={'column'}>
           <UISlider
             minValue={MR.lineWidth.min}
             maxValue={MR.lineWidth.max}
@@ -76,7 +76,7 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
             onValueChange={mapProps.setLineWidth}
           />
         </MenuItem>
-        <MenuItem title={'Line color'} direction={'column'}>
+        <MenuItem title={'Line color:'} direction={'column'}>
           <ColorRow
             colors={MR.lineColor.choices}
             initialChoice={mapProps.lineColor}

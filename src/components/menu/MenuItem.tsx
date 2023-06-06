@@ -68,8 +68,8 @@ const styles = StyleSheet.create({
   },
   divider: {
     width: '80%',
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomWidth: 2,
+    borderBottomColor: 'gray',
   },
   container: {
     width: '100%',
