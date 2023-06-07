@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Pressable, StyleSheet, Text } from 'react-native'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
 import { AppColors } from '@/AppConstants'
 
 type UIButtonProps = {
@@ -9,7 +9,6 @@ type UIButtonProps = {
   textColor?: string
 }
 
-// TODO: use TouchableOpacity (looks a lot better than the custom ripple)
 const UIButton = ({
   onPress,
   text = '',
@@ -18,15 +17,11 @@ const UIButton = ({
 }: UIButtonProps) => {
   return (
     <View>
-      <Pressable
-        onPress={onPress}
-        android_ripple={{ color: 'white', borderless: false, radius: 30 }}
-        style={({ pressed }) => [pressed ? styles.pressed : styles.notPressed]}
-      >
+      <TouchableOpacity onPress={onPress}>
         <View style={[styles.button, color ? { backgroundColor: color } : {}]}>
           <Text style={(styles.text, { color: textColor })}>{text}</Text>
         </View>
-      </Pressable>
+      </TouchableOpacity>
     </View>
   )
 }
@@ -38,17 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
-  pressed: { opacity: 0.5 },
-  notPressed: { opacity: 1 },
   text: { fontSize: 18 },
 })
 

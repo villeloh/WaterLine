@@ -2,7 +2,7 @@ import { LineCapType, LineJoinType } from 'react-native-maps'
 import { MapType } from '@/state/Repository'
 
 export const AppColors = {
-  btnColorPrimary: 'blue',
+  btnColorPrimary: '#706f6f',
   btnTextColorPrimary: 'white',
   bgGrey: '#dcdee0',
 }

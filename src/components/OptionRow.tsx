@@ -49,6 +49,8 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: AppColors.bgGrey,
     borderRadius: 5,
+    borderColor: '#b5b3b3',
+    borderWidth: 1,
     marginHorizontal: 5,
   },
   buttonText: {
