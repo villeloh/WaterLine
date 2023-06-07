@@ -23,10 +23,10 @@ const MapMeasureLine: React.FC<MapMeasureLineProps> = ({
   onPress,
   onMarkerDragEnd,
 }) => {
-  return endCoord ? (
+  return startCoord && endCoord ? (
     <>
       <Polyline
-        coordinates={startCoord && endCoord ? [startCoord, endCoord] : []}
+        coordinates={[startCoord, endCoord]}
         tappable={true}
         onPress={onPress ? onPress : undefined}
         strokeWidth={lineWidth}
@@ -35,20 +35,18 @@ const MapMeasureLine: React.FC<MapMeasureLineProps> = ({
         lineJoin={MML.lineJoin}
         geodesic={false} // Google Maps uses Mercator, so it should make sense
       />
-      {startCoord && endCoord ? (
-        <MapMarker
-          id={'measureMarker'}
-          location={endCoord}
-          totalDistance={metersBetween(startCoord, endCoord)}
-          isDraggable={true}
-          isTappable={false}
-          isExpandable={false}
-          color={MML.markerColor.default}
-          onDragEnd={
-            onMarkerDragEnd ? (event) => onMarkerDragEnd(event) : undefined
-          }
-        />
-      ) : null}
+      <MapMarker
+        id={'measureMarker'}
+        location={endCoord}
+        totalDistance={metersBetween(startCoord, endCoord)}
+        isDraggable={true}
+        isTappable={false}
+        isExpandable={false}
+        color={MML.markerColor.default}
+        onDragEnd={
+          onMarkerDragEnd ? (event) => onMarkerDragEnd(event) : undefined
+        }
+      />
     </>
   ) : null
 }
