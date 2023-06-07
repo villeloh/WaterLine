@@ -52,3 +52,7 @@ export const MapMeasureLine = {
   lineCap: 'butt' as LineCapType,
   lineJoin: 'miter' as LineJoinType,
 }
+
+export const Marker = {
+  color: { default: 'red', selected: 'green' },
+}

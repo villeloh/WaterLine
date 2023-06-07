@@ -6,7 +6,7 @@ import {
 } from 'react-native-maps'
 // NOTE: had to modify the library to export it; be careful with updates !!!
 import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
-import { MapRoute as MR } from '@/AppConstants'
+import { MapRoute as MR, Marker } from '@/AppConstants'
 import RouteData from '@/state/model/RouteData'
 import MapMarker from '@/ui/MapMarker'
 import { metersBetween } from '@/utils/calc'
@@ -14,6 +14,7 @@ import { metersBetween } from '@/utils/calc'
 type MapRouteProps = {
   isEditable: boolean
   routeData: RouteData
+  selectedMarkerId: number | null
   lineColor: string
   lineWidth: number
   onPress?: (event: PolylinePressEvent) => void
@@ -23,8 +24,9 @@ type MapRouteProps = {
 }
 
 const MapRoute: React.FC<MapRouteProps> = ({
-  routeData,
   isEditable,
+  routeData,
+  selectedMarkerId,
   lineColor,
   lineWidth,
   onPress,
@@ -43,6 +45,8 @@ const MapRoute: React.FC<MapRouteProps> = ({
     return total
   }
 
+  console.log('selectedMarkerId: ', selectedMarkerId)
+
   return (
     <>
       <Polyline
@@ -57,9 +61,14 @@ const MapRoute: React.FC<MapRouteProps> = ({
       />
       {routeData.coordinates.map((coord, index) => (
         <MapMarker
-          key={index}
+          key={index + (selectedMarkerId ?? 0)}
           id={'' + index}
           location={coord}
+          color={
+            selectedMarkerId === index
+              ? Marker.color.selected
+              : Marker.color.default
+          }
           distanceFromPrev={
             index > 0
               ? metersBetween(routeData.coordinates[index - 1], coord)

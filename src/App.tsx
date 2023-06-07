@@ -176,8 +176,9 @@ function App() {
     setSelectedMarkerId(null) // Reset selected marker
   }
 
+  // not needed atm; causes a weird index bug with onMarkerDragEnd() if enabled
   const onMarkerDragStart = () => {
-    setSelectedMarkerId(null) // prevent delete dialog
+    // setSelectedMarkerId(null) // prevent delete dialog
   }
 
   const onMarkerDragEnd = (event: MarkerDragStartEndEvent, index: number) => {
@@ -218,6 +219,7 @@ function App() {
         <MapRoute
           isEditable={!isMapLocked}
           routeData={routeData}
+          selectedMarkerId={selectedMarkerId}
           lineColor={lineColor}
           lineWidth={lineWidth}
           onPress={!isMapLocked ? onMapRoutePress : undefined}
