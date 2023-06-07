@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
-import Geolocation, { GeoCoordinates } from 'react-native-geolocation-service'
-import useAppState from './useAppState.android'
-import { useData } from './useData.android'
+import { LatLng } from 'react-native-maps'
+import Geolocation from 'react-native-geolocation-service'
+import useAppState from '@/hooks/useAppState.android'
+import { useData } from '@/hooks/useData.android'
 import { Setting as S } from '@/state/Repository'
 import { LocUpdateDistance, LocUpdateInterval } from '@/AppConstants'
 
 type UseLocationProps = boolean
 
 type UseLocationReturnType = [
-  location: GeoCoordinates | null,
+  location: LatLng | null,
   start: () => void,
   stop: () => void,
   isActive: boolean,
@@ -17,7 +18,7 @@ type UseLocationReturnType = [
 
 const useLocation = (isEnabled: UseLocationProps): UseLocationReturnType => {
   // TODO: maybe isActive could be removed somehow
-  const [location, setLocation] = useState<GeoCoordinates | null>(null)
+  const [location, setLocation] = useState<LatLng | null>(null)
   const [isActive, setIsActive] = useState(isEnabled)
   const watchId = useRef<number | null>(null)
   const [retryTimeoutId, setRetryTimeoutId] = useState<number | null>(null)
@@ -38,7 +39,10 @@ const useLocation = (isEnabled: UseLocationProps): UseLocationReturnType => {
     const id = Geolocation.watchPosition(
       (position) => {
         // console.log('POSITION: ', position)
-        setLocation(position.coords)
+        setLocation({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        })
         setIsActive(true)
         if (retryTimeoutId) {
           clearTimeout(retryTimeoutId)

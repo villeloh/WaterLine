@@ -1,7 +1,7 @@
 import React from 'react'
-import Scale from '@/components/Scale'
 import { StyleSheet, View } from 'react-native'
 import { Region } from 'react-native-maps'
+import Scale from '@/components/Scale'
 
 type MapScaleProps = {
   region: Region | null

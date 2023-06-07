@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import { Persistable, TypeMap } from './Repository'
+import { Persistable, TypeMap } from '@/state/Repository'
 
 export default class AsyncStorageDS {
   saveData = async <T extends Persistable>(

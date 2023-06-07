@@ -57,12 +57,12 @@ const Scale: React.FC<ScaleProps> = ({ region }) => {
         <View />
         <View>
           <Text style={{ textAlign: 'center' }}>{`${(scaleMax / 2).toFixed(
-            0,
+            1,
           )} ${unit}`}</Text>
         </View>
         <View>
           <Text style={{ textAlign: 'right' }}>{`${scaleMax.toFixed(
-            0,
+            1,
           )} ${unit}`}</Text>
         </View>
       </View>

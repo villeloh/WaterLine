@@ -27,8 +27,9 @@ import MapRoute from '@/ui/MapRoute'
 import MapScale from '@/ui/MapScale'
 import LocationMarker from '@/ui/LocationMarker'
 import RouteData from '@/state/model/RouteData'
-import Dialog from '@/components/Dialog'
 import MapMeasureLine from '@/ui/MapMeasureLine'
+import DeleteDialog, { DeleteTarget } from '@/ui/DeleteDialog'
+import { Actions, isValidStartCoord, pickAction } from '@/utils/other'
 
 // TODO: the app component is getting bloated with all the logic; modularize it somehow
 function App() {
@@ -77,7 +78,7 @@ function App() {
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isMapLocked)
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [deleteTarget, setDeleteTarget] = useState<string>('') // TODO: get rid of it somehow
+  const [deleteTarget, setDeleteTarget] = useState<DeleteTarget>('route') // TODO: get rid of it somehow
   const [selectedMarkerId, setSelectedMarkerId] = useState<number | null>(null)
 
   const mapRef = useRef<MapView>(null)
@@ -91,10 +92,7 @@ function App() {
 
         mapRef.current?.animateCamera({
           ...camera,
-          center: {
-            latitude: location?.latitude || 0,
-            longitude: location?.longitude || 0,
-          },
+          center: location ?? undefined,
         })
       } catch (error) {
         console.log('CAMERA ERROR: ', error)
@@ -112,7 +110,6 @@ function App() {
   }
 
   const onMapPress = (e: MapPressEvent) => {
-    // e.stopPropagation()
     const isMapPress = e.nativeEvent.action === 'press'
     if (!isMapPress) return // marker press
 
@@ -133,7 +130,8 @@ function App() {
       setShowDeleteDialog(true)
       setDeleteTarget('marker')
     } else {
-      setMeasureLineEndCoord(event.nativeEvent.coordinate)
+      if (isValidStartCoord(location))
+        setMeasureLineEndCoord(event.nativeEvent.coordinate)
     }
   }
 
@@ -193,6 +191,12 @@ function App() {
     setMeasureLineEndCoord(event.nativeEvent.coordinate)
   }
 
+  const deleteActions: Actions = {
+    route: deleteMapRoute,
+    measureLine: deleteMeasureLine,
+    marker: () => selectedMarkerId !== null && deleteMarker(selectedMarkerId),
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
@@ -222,14 +226,7 @@ function App() {
           onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
         />
         <MapMeasureLine
-          startCoord={
-            measureLineEndCoord
-              ? {
-                  latitude: location?.latitude ?? 0,
-                  longitude: location?.longitude ?? 0,
-                }
-              : null
-          }
+          startCoord={measureLineEndCoord ? location : null}
           endCoord={measureLineEndCoord}
           lineColor={MML.lineColor.default}
           lineWidth={lineWidth}
@@ -238,35 +235,20 @@ function App() {
         />
       </MapView>
       <MapScale region={region} />
-      <Dialog
+      <DeleteDialog
         isVisible={showDeleteDialog}
-        text={(() => {
-          if (deleteTarget === 'route') return 'DELETE ROUTE ?'
-          else if (deleteTarget === 'marker')
-            return `DELETE MARKER # ${
-              selectedMarkerId !== null ? selectedMarkerId + 1 : ''
-            } ?`
-          else return 'DELETE LINE ?'
-        })()}
-        yesButtonText={'YES'}
-        noButtonText={'NO'}
-        onYesButtonClick={() => {
-          if (deleteTarget === 'route') {
-            deleteMapRoute()
-          } else if (deleteTarget === 'marker') {
-            selectedMarkerId !== null && deleteMarker(selectedMarkerId)
-          } else {
-            deleteMeasureLine()
-          }
+        deleteTarget={deleteTarget}
+        selectedMarkerId={selectedMarkerId}
+        onYesButtonPress={() => {
+          pickAction(deleteTarget, deleteActions, null)
           setShowDeleteDialog(false)
         }}
-        onNoButtonClick={() => {
-          setShowDeleteDialog(false)
+        onNoButtonPress={() => {
           if (deleteTarget === 'marker') {
             setSelectedMarkerId(null)
           }
+          setShowDeleteDialog(false)
         }}
-        position={{ top: 0.4, left: 0.21 }}
       />
       <AppMenu
         onClose={onMenuClose}

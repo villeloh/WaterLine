@@ -1,6 +1,6 @@
+import { LatLng, Region } from 'react-native-maps'
 import { DataSource } from '@/state/DataSource'
 import AsyncStorageDS from '@/state/AsyncStorageDS'
-import { LatLng, Region } from 'react-native-maps'
 import Route from '@/state/model/RouteData'
 
 export type Persistable = Setting | TripData

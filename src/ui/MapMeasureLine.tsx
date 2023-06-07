@@ -5,6 +5,7 @@ import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
 import { MapMeasureLine as MML } from '@/AppConstants'
 import MapMarker from '@/ui/MapMarker'
 import { metersBetween } from '@/utils/calc'
+import { isValidStartCoord } from '@/utils/other'
 
 type MapMeasureLineProps = {
   startCoord: LatLng | null
@@ -23,7 +24,7 @@ const MapMeasureLine: React.FC<MapMeasureLineProps> = ({
   onPress,
   onMarkerDragEnd,
 }) => {
-  return startCoord && endCoord ? (
+  return startCoord && isValidStartCoord(startCoord) && endCoord ? (
     <>
       <Polyline
         coordinates={[startCoord, endCoord]}
