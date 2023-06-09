@@ -4,31 +4,29 @@ import Menu from '@/components/menu/Menu'
 import MenuItem from '@/components/menu/MenuItem'
 import UIButton from '@/components/UIButton'
 import { MAP_TYPES, MapType } from '@/state/Repository'
-import { MapRoute as MR } from '@/AppConstants'
+import { MapRoute as MR, DefaultMapType } from '@/AppConstants'
 import MapTypeOptions from '@/ui/MapTypeOptions'
 import UISlider from '@/components/UISlider'
 import ColorRow from '@/components/ColorRow'
+import { useData } from '@/hooks/useData.android'
+import { Setting as S, TripData as TD } from '@/state/Repository'
 
 type AppMenuProps = {
   onOpen: () => void
   onClose: () => void
-  mapProps: {
-    mapType: MapType
-    setMapType: (newType: MapType) => void
-    lineWidth: number
-    setLineWidth: (newWidth: number) => void
-    lineColor: string
-    setLineColor: (newColor: string) => void
-  }
 }
 
-const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
+const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
   const [isOpen, setIsOpen] = useState(false)
 
   const handleMenuPress = () => {
     isOpen ? onClose() : onOpen()
     setIsOpen(!isOpen)
   }
+
+  const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
+  const [lineWidth, setLineWidth] = useData(S.lineWidth, MR.lineWidth.default)
+  const [lineColor, setLineColor] = useData(S.lineColor, MR.lineColor.default)
 
   return (
     <>
@@ -37,28 +35,25 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose, mapProps }) => {
       </View>
       <Menu isVisible={isOpen}>
         <MenuItem title={'Map Type:  '} direction={'row'}>
-          {/* TODO: rather than props, give it state via a singleton form of useData() */}
           <MapTypeOptions
             options={MAP_TYPES}
-            initialSelection={mapProps.mapType}
-            onSelectOption={(option: string) =>
-              mapProps.setMapType(option as MapType)
-            }
+            initialSelection={mapType}
+            onSelectOption={(option: string) => setMapType(option as MapType)}
           />
         </MenuItem>
         <MenuItem title={'Line width:'} direction={'column'}>
           <UISlider
             minValue={MR.lineWidth.min}
             maxValue={MR.lineWidth.max}
-            initialValue={mapProps.lineWidth}
-            onValueChange={mapProps.setLineWidth}
+            initialValue={lineWidth}
+            onValueChange={setLineWidth}
           />
         </MenuItem>
         <MenuItem title={'Line color:'} direction={'column'}>
           <ColorRow
             colors={MR.lineColor.choices}
-            initialChoice={mapProps.lineColor}
-            onValueChange={mapProps.setLineColor}
+            initialChoice={lineColor}
+            onValueChange={setLineColor}
           />
         </MenuItem>
       </Menu>

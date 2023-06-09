@@ -1,6 +1,7 @@
 import React, { Dispatch, createContext, useReducer } from 'react'
 import { Persistable, TypeMap, Repo } from '@/state/Repository'
 import useAppState from '@/hooks/useAppState.android'
+import { Setting, TripData } from '@/state/Repository'
 
 // '?' signifies that the keys are optional
 type State = { [K in Persistable]?: TypeMap[K] }
@@ -32,18 +33,20 @@ export const DataProvider = ({ children }: DataProviderProps) => {
   const [state, dispatch] = useReducer(dataReducer, {})
 
   const onEnterForeground = async <T extends Persistable>() => {
-    // TODO: ensure that the key potentially not existing doesn't cause any issues
-    for (const key in state) {
-      const persKey = key as Persistable
+    // upon app restart, the local state is empty, so we have to check every key
+    const allKeys = { ...Setting, ...TripData }
 
-      const localData = state[persKey]
+    for (const key of Object.keys(allKeys)) {
+      const localData = state[key as Persistable]
+
       if (!localData) {
-        const repoData = (await Repo.load(persKey)) as TypeMap[T]
+        const repoKey = allKeys[key as keyof typeof allKeys]
+        const repoData = (await Repo.load(repoKey)) as TypeMap[T]
         if (repoData) {
           // save it into local state
           dispatch({
             type: 'SET_DATA',
-            key: persKey,
+            key: repoKey,
             payload: repoData,
           })
         }
