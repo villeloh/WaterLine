@@ -34,7 +34,7 @@ const MapRoute: React.FC<MapRouteProps> = ({
   onMarkerDragStart,
   onMarkerDragEnd,
 }) => {
-  const totalDistanceSoFar = (index: number) => {
+  const _totalDistanceSoFar = (index: number) => {
     if (index === 0) return 0
 
     const coords = routeData.coordinates
@@ -44,8 +44,6 @@ const MapRoute: React.FC<MapRouteProps> = ({
     }
     return total
   }
-
-  console.log('selectedMarkerId: ', selectedMarkerId)
 
   return (
     <>
@@ -74,10 +72,10 @@ const MapRoute: React.FC<MapRouteProps> = ({
               ? metersBetween(routeData.coordinates[index - 1], coord)
               : 0
           }
-          totalDistance={totalDistanceSoFar(index)}
+          totalDistance={_totalDistanceSoFar(index)}
           isDraggable={isEditable}
           isTappable={true}
-          isExpandable={!isEditable} // expanding interferes with deletion
+          isExpandable={!isEditable} // expanding interferes with other interactions
           onDragStart={onMarkerDragStart ? onMarkerDragStart : undefined}
           onDragEnd={
             onMarkerDragEnd

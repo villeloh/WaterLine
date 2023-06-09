@@ -29,7 +29,8 @@ import LocationMarker from '@/ui/LocationMarker'
 import RouteData from '@/state/model/RouteData'
 import MapMeasureLine from '@/ui/MapMeasureLine'
 import DeleteDialog, { DeleteTarget } from '@/ui/DeleteDialog'
-import { Actions, isValidStartCoord, pickAction } from '@/utils/other'
+import { Actions, pickAction, isValidStartCoord } from '@/utils/other'
+import { DataProvider } from '@/state/DataProvider'
 
 // TODO: the app component is getting bloated with all the logic; modularize it somehow
 function App() {
@@ -199,72 +200,74 @@ function App() {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
-      <MapView
-        ref={mapRef}
-        provider={PROVIDER_GOOGLE}
-        style={styles.map}
-        mapType={mapType}
-        initialRegion={region}
-        showsUserLocation={false} // we use a custom marker
-        showsMyLocationButton={false} // automatic
-        onRegionChangeComplete={(reg) => {
-          setRegion(reg)
-        }}
-        onPress={!isMapLocked ? onMapPress : undefined}
-        onLongPress={onMapLongPress}
-      >
-        <LocationMarker location={location} />
-        <MapRoute
-          isEditable={!isMapLocked}
-          routeData={routeData}
+    <DataProvider>
+      <SafeAreaView style={styles.container}>
+        <LockSwitch isMapLocked={isMapLocked} onSwitch={onMapLockSwitch} />
+        <MapView
+          ref={mapRef}
+          provider={PROVIDER_GOOGLE}
+          style={styles.map}
+          mapType={mapType}
+          initialRegion={region}
+          showsUserLocation={false} // we use a custom marker
+          showsMyLocationButton={false} // automatic
+          onRegionChangeComplete={(reg) => {
+            setRegion(reg)
+          }}
+          onPress={!isMapLocked ? onMapPress : undefined}
+          onLongPress={onMapLongPress}
+        >
+          <LocationMarker location={location} />
+          <MapRoute
+            isEditable={!isMapLocked}
+            routeData={routeData}
+            selectedMarkerId={selectedMarkerId}
+            lineColor={lineColor}
+            lineWidth={lineWidth}
+            onPress={!isMapLocked ? onMapRoutePress : undefined}
+            onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
+            onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
+            onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
+          />
+          <MapMeasureLine
+            startCoord={measureLineEndCoord ? location : null}
+            endCoord={measureLineEndCoord}
+            lineColor={MML.lineColor.default}
+            lineWidth={lineWidth}
+            onPress={onMeasureLinePress}
+            onMarkerDragEnd={onMeasureLineMarkerDragEnd}
+          />
+        </MapView>
+        <MapScale region={region} />
+        <DeleteDialog
+          isVisible={showDeleteDialog}
+          deleteTarget={deleteTarget}
           selectedMarkerId={selectedMarkerId}
-          lineColor={lineColor}
-          lineWidth={lineWidth}
-          onPress={!isMapLocked ? onMapRoutePress : undefined}
-          onMarkerPress={!isMapLocked ? onMarkerPress : undefined}
-          onMarkerDragStart={!isMapLocked ? onMarkerDragStart : undefined}
-          onMarkerDragEnd={!isMapLocked ? onMarkerDragEnd : undefined}
+          onYesButtonPress={() => {
+            pickAction(deleteTarget, deleteActions, null)
+            setShowDeleteDialog(false)
+          }}
+          onNoButtonPress={() => {
+            if (deleteTarget === 'marker') {
+              setSelectedMarkerId(null)
+            }
+            setShowDeleteDialog(false)
+          }}
         />
-        <MapMeasureLine
-          startCoord={measureLineEndCoord ? location : null}
-          endCoord={measureLineEndCoord}
-          lineColor={MML.lineColor.default}
-          lineWidth={lineWidth}
-          onPress={onMeasureLinePress}
-          onMarkerDragEnd={onMeasureLineMarkerDragEnd}
+        <AppMenu
+          onClose={onMenuClose}
+          onOpen={onMenuOpen}
+          mapProps={{
+            mapType,
+            setMapType,
+            lineColor,
+            setLineColor,
+            lineWidth,
+            setLineWidth,
+          }}
         />
-      </MapView>
-      <MapScale region={region} />
-      <DeleteDialog
-        isVisible={showDeleteDialog}
-        deleteTarget={deleteTarget}
-        selectedMarkerId={selectedMarkerId}
-        onYesButtonPress={() => {
-          pickAction(deleteTarget, deleteActions, null)
-          setShowDeleteDialog(false)
-        }}
-        onNoButtonPress={() => {
-          if (deleteTarget === 'marker') {
-            setSelectedMarkerId(null)
-          }
-          setShowDeleteDialog(false)
-        }}
-      />
-      <AppMenu
-        onClose={onMenuClose}
-        onOpen={onMenuOpen}
-        mapProps={{
-          mapType,
-          setMapType,
-          lineColor,
-          setLineColor,
-          lineWidth,
-          setLineWidth,
-        }}
-      />
-    </SafeAreaView>
+      </SafeAreaView>
+    </DataProvider>
   )
 }
 

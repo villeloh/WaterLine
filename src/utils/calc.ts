@@ -27,27 +27,6 @@ export const latDeltaToScreenM = (longDelta: number, latDelta: number) => {
   return latDelta * oneDegreeOfLatitudeInM * multiplier * mysteryFactor
 }
 
-/*
-export const longDeltaToM = (
-  longDelta: number,
-  latDelta: number,
-  latitude: number,
-) => {
-  const radianLat = latitude * (Math.PI / 180) // Convert latitude from degrees to radians
-
-  const ratio = longDelta / latDelta // 0.5 when phone is upright; 2.0 when it's horizontal
-
-  // the map's orientation (relative to the phone screen) affects things
-  const portraitRatio = 1
-  const landscapeRatio = 2
-  const currentRatio =
-    portraitRatio + (landscapeRatio - portraitRatio) * (adjustedAngle / 90.0)
-
-  const correctedLongDelta = longDelta * currentRatio
-
-  return Math.abs(111320 * Math.cos(radianLat) * correctedLongDelta)
-} */
-
 const _toRadians = (degrees: number) => {
   return degrees * (Math.PI / 180)
 }
