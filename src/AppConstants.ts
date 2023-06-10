@@ -10,12 +10,12 @@ export const AppColors = {
 export const LocUpdateInterval = {
   min: 1, // seconds
   default: 10,
-  max: 60,
+  max: 120,
 }
 
 export const LocUpdateDistance = {
   min: 0,
-  default: 0, // meters
+  default: 10, // meters
   max: 100,
 }
 

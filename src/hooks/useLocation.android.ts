@@ -62,7 +62,7 @@ const useLocation = (isEnabled: UseLocationProps): UseLocationReturnType => {
       {
         enableHighAccuracy: true,
         distanceFilter: updateDistance, // distance in meters before a new location update
-        interval: updateInterval * 1000,
+        interval: updateInterval * 1000, // time in ms between location updates
         fastestInterval: updateInterval * 1000,
         forceRequestLocation: true,
         showLocationDialog: false,

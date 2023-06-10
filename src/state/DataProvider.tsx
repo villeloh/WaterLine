@@ -38,13 +38,13 @@ export const DataProvider = ({ children }: DataProviderProps) => {
       const localData = state[key as Persistable]
 
       if (!localData) {
-        const repoKey = PersistableKeys[key as keyof typeof PersistableKeys]
-        const repoData = (await Repo.load(repoKey as Persistable)) as TypeMap[T]
+        // const repoKey = PersistableKeys[key as keyof typeof PersistableKeys]
+        const repoData = (await Repo.load(key as Persistable)) as TypeMap[T]
         if (repoData) {
           // save it into local state
           dispatch({
             type: 'SET_DATA',
-            key: repoKey as Persistable,
+            key: key as Persistable,
             payload: repoData,
           })
         }

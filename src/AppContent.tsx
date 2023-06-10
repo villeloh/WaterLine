@@ -19,8 +19,6 @@ import {
   DefaultMapType,
   MapRoute as MR,
   MapMeasureLine as MML,
-  LocUpdateInterval as LocUI,
-  LocUpdateDistance as LocUD,
 } from '@/AppConstants'
 import {
   LockSwitch,
@@ -53,16 +51,6 @@ function AppContent() {
   )
   const [region, setRegion] = useData(S.mapRegion, MapRegion.default)
 
-  // TODO: hook these up to the menu
-  const [locUpdateInterval, setLocUpdateInterval] = useData(
-    S.locUpdateInterval,
-    LocUI.default,
-  )
-  const [locUpdateDistance, setLocUpdateDistance] = useData(
-    S.locUpdateDistance,
-    LocUD.default,
-  )
-
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isMapLocked)
   const persistAllData = usePersist() // save all data to Repo (to survive app restart)
@@ -91,7 +79,7 @@ function AppContent() {
     updatePosition()
   }, [location, isGeoLocActive])
 
-  // These could be within the AppMenu itself
+  // TODO: These could be within the AppMenu itself
   const onMenuClose = () => {
     startGeoLoc()
   }
@@ -163,6 +151,8 @@ function AppContent() {
     setMeasureLineEndCoord(null)
   }
 
+  // TODO: bug: if you delete marker #1, the color of the new #1 marker stays green, even though
+  // it's not selected. This is due to rendering behavior of the Maps library, so nothing can probably be done about it
   const deleteMarker = (id: number) => {
     const newCoords = routeData.coordinates.filter((_, index) => index !== id)
     setRouteData(new RouteData(newCoords))

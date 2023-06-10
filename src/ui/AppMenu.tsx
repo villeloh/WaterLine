@@ -4,7 +4,12 @@ import { Menu, MenuItem, UIButton, UISlider, ColorRow } from '@/components'
 import { MapTypeOptions } from '@/ui'
 import { useData } from '@/hooks'
 import { Setting as S, MAP_TYPES, MapType } from '@/state/types/'
-import { MapRoute as MR, DefaultMapType } from '@/AppConstants'
+import {
+  MapRoute as MR,
+  DefaultMapType,
+  LocUpdateInterval as LocUI,
+  LocUpdateDistance as LocUD,
+} from '@/AppConstants'
 
 type AppMenuProps = {
   onOpen: () => void
@@ -22,6 +27,14 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
   const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
   const [lineWidth, setLineWidth] = useData(S.lineWidth, MR.lineWidth.default)
   const [lineColor, setLineColor] = useData(S.lineColor, MR.lineColor.default)
+  const [locUpdateInterval, setLocUpdateInterval] = useData(
+    S.locUpdateInterval,
+    LocUI.default,
+  )
+  const [locUpdateDistance, setLocUpdateDistance] = useData(
+    S.locUpdateDistance,
+    LocUD.default,
+  )
 
   return (
     <>
@@ -49,6 +62,24 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
             colors={MR.lineColor.choices}
             initialChoice={lineColor}
             onValueChange={setLineColor}
+          />
+        </MenuItem>
+        <MenuItem title={'Update distance:'} direction={'column'}>
+          <UISlider
+            minValue={LocUD.min}
+            maxValue={LocUD.max}
+            initialValue={locUpdateDistance}
+            unit={'m'}
+            onValueChange={setLocUpdateDistance}
+          />
+        </MenuItem>
+        <MenuItem title={'Update interval:'} direction={'column'}>
+          <UISlider
+            minValue={LocUI.min}
+            maxValue={LocUI.max}
+            unit={'s'}
+            initialValue={locUpdateInterval}
+            onValueChange={setLocUpdateInterval}
           />
         </MenuItem>
       </Menu>

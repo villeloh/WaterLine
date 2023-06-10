@@ -7,6 +7,7 @@ type UISliderProps = {
   maxValue: number
   initialValue: number
   step?: number
+  unit?: string
   onValueChange: (newValue: number) => void
 }
 
@@ -16,6 +17,7 @@ const UISlider: React.FC<UISliderProps> = ({
   initialValue,
   onValueChange,
   step = 1,
+  unit,
 }) => {
   const [value, setValue] = useState(initialValue)
 
@@ -23,6 +25,8 @@ const UISlider: React.FC<UISliderProps> = ({
     setValue(newValue)
     onValueChange(newValue)
   }
+
+  const valueText = unit ? `${value} ${unit}` : value
 
   return (
     <View style={styles.container}>
@@ -37,7 +41,7 @@ const UISlider: React.FC<UISliderProps> = ({
         minimumTrackTintColor="red"
         maximumTrackTintColor="green"
       />
-      <Text>{value}</Text>
+      <Text>{valueText}</Text>
     </View>
   )
 }
