@@ -7,7 +7,7 @@ const useAppState = (
 ) => {
   const [appState, setAppState] = useState(AppState.currentState)
 
-  // initial db data load
+  // initial data load
   useEffect(() => {
     if (appState === 'active') {
       onEnterForeground()

@@ -1,5 +1,5 @@
 import { LineCapType, LineJoinType } from 'react-native-maps'
-import { MapType } from '@/state/Repository'
+import { MapType } from '@/state/types'
 
 export const AppColors = {
   btnColorPrimary: '#706f6f',

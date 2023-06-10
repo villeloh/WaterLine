@@ -1,8 +1,9 @@
-import { DataContext } from '@/state/DataProvider'
-import { Persistable, Repo } from '@/state/Repository'
 import { useContext } from 'react'
+import { DataContext } from '@/state/DataProvider'
+import { Persistable } from '@/state/types'
+import { Repo } from '@/state/Repository'
 
-export const usePersist = () => {
+const usePersist = () => {
   const dataContext = useContext(DataContext)
   if (!dataContext) {
     throw new Error('usePersist() must be used within a DataProvider')
@@ -21,3 +22,5 @@ export const usePersist = () => {
 
   return persistAll
 }
+
+export default usePersist

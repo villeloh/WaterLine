@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import Menu from '@/components/menu/Menu'
-import MenuItem from '@/components/menu/MenuItem'
-import UIButton from '@/components/UIButton'
-import { MAP_TYPES, MapType } from '@/state/Repository'
+import { Menu, MenuItem, UIButton, UISlider, ColorRow } from '@/components'
+import { MapTypeOptions } from '@/ui'
+import { useData } from '@/hooks'
+import { Setting as S, MAP_TYPES, MapType } from '@/state/types/'
 import { MapRoute as MR, DefaultMapType } from '@/AppConstants'
-import MapTypeOptions from '@/ui/MapTypeOptions'
-import UISlider from '@/components/UISlider'
-import ColorRow from '@/components/ColorRow'
-import { useData } from '@/hooks/useData.android'
-import { Setting as S, TripData as TD } from '@/state/Repository'
 
 type AppMenuProps = {
   onOpen: () => void

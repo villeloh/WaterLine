@@ -2,9 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
 import { LatLng } from 'react-native-maps'
 import Geolocation from 'react-native-geolocation-service'
-import useAppState from '@/hooks/useAppState.android'
-import { useData } from '@/hooks/useData.android'
-import { Setting as S } from '@/state/Repository'
+import { useData, useAppState } from '@/hooks'
+import { Setting as S } from '@/state/types'
 import { LocUpdateDistance, LocUpdateInterval } from '@/AppConstants'
 
 type UseLocationProps = boolean
@@ -16,6 +15,8 @@ type UseLocationReturnType = [
   isActive: boolean,
 ]
 
+// TODO: the state is still incorrect sometimes (mainly on app startup)
+// TODO: use navigation.geolocation.watchPosition() (supposedly more accurate)
 const useLocation = (isEnabled: UseLocationProps): UseLocationReturnType => {
   // TODO: maybe isActive could be removed somehow
   const [location, setLocation] = useState<LatLng | null>(null)

@@ -1,11 +1,12 @@
 import { useState, useContext, useEffect } from 'react'
 import { DataContext } from '@/state/DataProvider'
-import { Persistable, TypeMap, Repo } from '@/state/Repository'
+import { Persistable, TypeMap } from '@/state/types'
+import { Repo } from '@/state/Repository'
 
 // a 'spiced up' useState that writes to the Repo as well as local state.
 // Works as a global datastore; a 'mini-Redux' of sorts
 // TODO: handle errors somehow (maybe retry once and/or show a Toast?)
-export const useData = <T extends Persistable>(
+const useData = <T extends Persistable>(
   key: T,
   defaultValue: TypeMap[T],
 ): [TypeMap[T], (value: TypeMap[T]) => void, () => void, boolean] => {
@@ -39,3 +40,5 @@ export const useData = <T extends Persistable>(
 
   return [state[key] ?? defaultValue, setData, persistData, isLoading]
 }
+
+export default useData

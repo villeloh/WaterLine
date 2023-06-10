@@ -11,8 +11,8 @@ enableLatestRenderer()
 import { SafeAreaView, StyleSheet } from 'react-native'
 import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
-import { Setting as S, TripData as TD } from '@/state/Repository'
-import { useData } from '@/hooks/useData.android'
+import { TripData as TD, Setting as S, RouteData } from '@/state/types'
+import { useData, usePersist } from '@/hooks'
 import {
   MapRegion,
   IsMapLocked,
@@ -22,15 +22,16 @@ import {
   LocUpdateInterval as LocUI,
   LocUpdateDistance as LocUD,
 } from '@/AppConstants'
-import LockSwitch from '@/ui/LockSwitch'
-import MapRoute from '@/ui/MapRoute'
-import MapScale from '@/ui/MapScale'
-import LocationMarker from '@/ui/LocationMarker'
-import RouteData from '@/state/model/RouteData'
-import MapMeasureLine from '@/ui/MapMeasureLine'
-import DeleteDialog, { DeleteTarget } from '@/ui/DeleteDialog'
+import {
+  LockSwitch,
+  MapRoute,
+  MapScale,
+  LocationMarker,
+  MapMeasureLine,
+  DeleteDialog,
+  DeleteTarget,
+} from '@/ui'
 import { Actions, pickAction, isValidStartCoord } from '@/utils/other'
-import { usePersist } from '@/hooks/usePersist.android'
 
 // TODO: the app component is getting bloated with all the logic; modularize it somehow
 function AppContent() {
@@ -71,6 +72,7 @@ function AppContent() {
 
   const mapRef = useRef<MapView>(null)
 
+  // TODO: this mess should not be here; extract it into a hook maybe?
   useEffect(() => {
     const updatePosition = async () => {
       if (!isGeoLocActive) return
