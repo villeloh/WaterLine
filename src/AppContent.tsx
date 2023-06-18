@@ -119,10 +119,8 @@ function AppContent() {
 
   const onMapLockSwitch = (newValue: boolean) => {
     setIsMapLocked(newValue)
-    // persist data to Repo on map lock (most convenient occasion)
-    if (newValue) {
-      persistAllData()
-    }
+    // persist data to Repo on lock switch (most convenient occasion)
+    persistAllData()
   }
 
   const onMapRoutePress = () => {
