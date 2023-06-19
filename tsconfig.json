@@ -2,14 +2,14 @@
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
     "target": "es6",
-    "module": "commonjs",
+    "module": "ES6",
     "moduleResolution": "node",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+    "jsx": "react-native",
     "baseUrl": "./",
     "paths": {
       "@/*": ["./src/*"]
-      // Add more paths here if needed
     }
   }
 }
