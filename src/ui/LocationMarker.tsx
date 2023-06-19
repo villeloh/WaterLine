@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react'
-import { Animated, StyleSheet } from 'react-native'
+import React, { useRef } from 'react'
+import { Animated, View, StyleSheet } from 'react-native'
 import { LatLng, Marker } from 'react-native-maps'
 
 type LocationMarkerProps = {
@@ -7,9 +7,10 @@ type LocationMarkerProps = {
 }
 
 const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
-  const opacityAnim = useRef(new Animated.Value(0.8)).current
+  // const opacityAnim = useRef(new Animated.Value(0.8)).current
 
   // flashing animation
+  /*
   const animateMarker = () => {
     Animated.sequence([
       Animated.timing(opacityAnim, {
@@ -23,19 +24,20 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
         useNativeDriver: false,
       }),
     ]).start()
-  }
-
+  }  */
+  /*
   // to stop too frequent updates
   const truncatedLat = Number(location?.latitude.toFixed(3)) || 0
   const truncatedLong = Number(location?.longitude.toFixed(3)) || 0
 
   useEffect(() => {
-    animateMarker()
+    // animateMarker()
   }, [truncatedLat, truncatedLong]) // eslint-disable-line react-hooks/exhaustive-deps
+  */
 
   return location !== null ? (
-    <Marker coordinate={location}>
-      <Animated.View style={[styles.markerStyle, { opacity: opacityAnim }]} />
+    <Marker coordinate={location} tracksInfoWindowChanges={false}>
+      <View style={/*[*/ styles.markerStyle /*, { opacity: opacityAnim }] */} />
     </Marker>
   ) : null
 }
