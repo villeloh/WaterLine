@@ -1,6 +1,8 @@
 import React, { useRef } from 'react'
-import { Animated, View, StyleSheet } from 'react-native'
+import { Animated, View, StyleSheet, Image } from 'react-native'
 import { LatLng, Marker } from 'react-native-maps'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const loc_marker = require('@/loc_marker.png')
 
 type LocationMarkerProps = {
   location: LatLng | null
@@ -36,9 +38,11 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
   */
 
   return location !== null ? (
-    <Marker coordinate={location} tracksInfoWindowChanges={false}>
-      <View style={/*[*/ styles.markerStyle /*, { opacity: opacityAnim }] */} />
-    </Marker>
+    <Marker
+      coordinate={location}
+      tracksInfoWindowChanges={false}
+      image={loc_marker}
+    />
   ) : null
 }
 
