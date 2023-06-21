@@ -24,9 +24,6 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
     setIsOpen(!isOpen)
   }
 
-  const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
-  const [lineWidth, setLineWidth] = useData(S.lineWidth, MR.lineWidth.default)
-  const [lineColor, setLineColor] = useData(S.lineColor, MR.lineColor.default)
   const [locUpdateInterval, setLocUpdateInterval] = useData(
     S.locUpdateInterval,
     LocUI.default,
@@ -35,6 +32,9 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
     S.locUpdateDistance,
     LocUD.default,
   )
+  const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
+  const [lineWidth, setLineWidth] = useData(S.lineWidth, MR.lineWidth.default)
+  const [lineColor, setLineColor] = useData(S.lineColor, MR.lineColor.default)
 
   return (
     <>

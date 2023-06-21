@@ -37,9 +37,9 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     for (const key of PersistableKeys) {
       const localData = state[key as Persistable]
 
-      if (!localData) {
+      if (localData === undefined) {
         const repoData = (await Repo.load(key as Persistable)) as TypeMap[T]
-        if (repoData) {
+        if (repoData !== undefined) {
           // save it into local state
           dispatch({
             type: 'SET_DATA',
@@ -55,7 +55,7 @@ export const DataProvider = ({ children }: DataProviderProps) => {
     for (const key in state) {
       const persKey = key as Persistable
       const value = state[persKey]
-      if (value) {
+      if (value !== undefined) {
         Repo.save(persKey, value)
       }
     }
@@ -75,4 +75,7 @@ type DataContextType = {
   dispatch: Dispatch<Action>
 }
 
-export const DataContext = createContext<DataContextType | undefined>(undefined)
+export const DataContext = createContext<DataContextType | undefined>({
+  state: {},
+  dispatch: () => null,
+})

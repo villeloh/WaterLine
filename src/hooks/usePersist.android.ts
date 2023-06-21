@@ -14,7 +14,7 @@ const usePersist = () => {
     for (const key in state) {
       const persKey = key as Persistable
       const value = state[persKey]
-      if (value) {
+      if (value !== undefined) {
         Repo.save(persKey, value)
       }
     }

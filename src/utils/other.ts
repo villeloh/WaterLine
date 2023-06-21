@@ -25,3 +25,7 @@ export const pickAction = <T extends keyof Actions>(
 export const isValidStartCoord = (startCoord: LatLng | null) => {
   return startCoord && startCoord.latitude !== 0 && startCoord.longitude !== 0
 }
+
+export const isNullish = (value: unknown) => {
+  return value === null || value === undefined
+}
