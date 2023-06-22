@@ -41,7 +41,7 @@ const LocationMarker: React.FC<LocationMarkerProps> = ({ location }) => {
     <Marker
       coordinate={location}
       tracksInfoWindowChanges={false}
-      image={loc_marker}
+      // image={loc_marker} // scaled incorrectly in APK-installed app
     />
   ) : null
 }
