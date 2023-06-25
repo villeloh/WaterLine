@@ -13,13 +13,7 @@ import useLocation from '@/hooks/useLocation.android'
 import AppMenu from '@/ui/AppMenu'
 import { TripData as TD, Setting as S, RouteData } from '@/state/types'
 import { useData, usePersist } from '@/hooks'
-import {
-  MapRegion,
-  IsMapLocked,
-  DefaultMapType,
-  MapRoute as MR,
-  MapMeasureLine as MML,
-} from '@/AppConstants'
+import { MapMeasureLine as MML } from '@/AppConstants'
 import {
   LockSwitch,
   MapRoute,
@@ -31,26 +25,17 @@ import {
 } from '@/ui'
 import { Actions, pickAction, isValidStartCoord } from '@/utils/other'
 
-// TODO: the app component is getting bloated with all the logic; modularize it somehow
 function AppContent() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state
-  // TODO: *optionally* abstract away the defaultValue argument somehow
-  const [mapType] = useData(S.mapType, DefaultMapType)
-
-  const [lineWidth] = useData(S.lineWidth, MR.lineWidth.default)
-  const [lineColor] = useData(S.lineColor, MR.lineColor.default)
-
-  const [isMapLocked, setIsMapLocked] = useData(
-    S.isMapLocked,
-    IsMapLocked.default,
-  )
-  const [routeData, setRouteData] = useData(TD.route, new RouteData([]))
+  const [mapType] = useData(S.mapType)
+  const [lineWidth] = useData(S.lineWidth)
+  const [lineColor] = useData(S.lineColor)
+  const [isMapLocked, setIsMapLocked] = useData(S.isMapLocked)
+  const [routeData, setRouteData] = useData(TD.route)
+  const [region, setRegion] = useData(S.mapRegion)
   const [measureLineEndCoord, setMeasureLineEndCoord] = useData(
     TD.measureLineEndCoord,
-    null,
   )
-  const [region, setRegion] = useData(S.mapRegion, MapRegion.default)
-
   const [location, startGeoLoc, stopGeoLoc, isGeoLocActive] =
     useLocation(isMapLocked)
   const persistAllData = usePersist() // save all data to Repo (to survive app restart)

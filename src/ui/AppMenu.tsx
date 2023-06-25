@@ -6,7 +6,6 @@ import { useData } from '@/hooks'
 import { Setting as S, MAP_TYPES, MapType } from '@/state/types/'
 import {
   MapRoute as MR,
-  DefaultMapType,
   LocUpdateInterval as LocUI,
   LocUpdateDistance as LocUD,
 } from '@/AppConstants'
@@ -24,17 +23,11 @@ const AppMenu: React.FC<AppMenuProps> = ({ onOpen, onClose }) => {
     setIsOpen(!isOpen)
   }
 
-  const [locUpdateInterval, setLocUpdateInterval] = useData(
-    S.locUpdateInterval,
-    LocUI.default,
-  )
-  const [locUpdateDistance, setLocUpdateDistance] = useData(
-    S.locUpdateDistance,
-    LocUD.default,
-  )
-  const [mapType, setMapType] = useData(S.mapType, DefaultMapType)
-  const [lineWidth, setLineWidth] = useData(S.lineWidth, MR.lineWidth.default)
-  const [lineColor, setLineColor] = useData(S.lineColor, MR.lineColor.default)
+  const [locUpdateInterval, setLocUpdateInterval] = useData(S.locUpdateInterval)
+  const [locUpdateDistance, setLocUpdateDistance] = useData(S.locUpdateDistance)
+  const [mapType, setMapType] = useData(S.mapType)
+  const [lineWidth, setLineWidth] = useData(S.lineWidth)
+  const [lineColor, setLineColor] = useData(S.lineColor)
 
   return (
     <>

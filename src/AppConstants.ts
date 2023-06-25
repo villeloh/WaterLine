@@ -1,5 +1,5 @@
 import { LineCapType, LineJoinType } from 'react-native-maps'
-import { MapType } from '@/state/types'
+import { MapType, RouteData, Setting, TripData, TypeMap } from '@/state/types'
 
 export const AppColors = {
   btnColorPrimary: '#706f6f',
@@ -55,4 +55,20 @@ export const MapMeasureLine = {
 
 export const Marker = {
   color: { default: 'red', selected: 'green' },
+}
+
+// TODO: sort out the different type variables etc; are all really needed ?
+// NOTE: it's arguable whether this should be defined here, but it's convenient and these values are constant for all intents and purposes
+type DefaultValues = { [K in keyof TypeMap]: TypeMap[K] }
+export const DEFAULT_VALUES: DefaultValues = {
+  [Setting.mapType]: DefaultMapType,
+  [Setting.isMapLocked]: IsMapLocked.default,
+  [Setting.isGeoLocEnabled]: false,
+  [Setting.mapRegion]: MapRegion.default,
+  [Setting.locUpdateInterval]: LocUpdateInterval.default,
+  [Setting.locUpdateDistance]: LocUpdateDistance.default,
+  [Setting.lineWidth]: MapRoute.lineWidth.default,
+  [Setting.lineColor]: MapRoute.lineColor.default,
+  [TripData.route]: new RouteData([]),
+  [TripData.measureLineEndCoord]: null,
 }
