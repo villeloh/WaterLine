@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
-import { AppColors } from '@/AppConstants'
+import { AppColors } from 'AppConstants'
 
 type UIButtonProps = {
   onPress?: () => void

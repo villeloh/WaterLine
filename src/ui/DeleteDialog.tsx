@@ -1,5 +1,5 @@
 import React from 'react'
-import { Dialog } from '@/components'
+import { Dialog } from 'components'
 
 // technically it is a type, but it's clearer to define it here
 export type DeleteTarget = 'route' | 'marker' | 'measureLine'

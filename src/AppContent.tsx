@@ -9,11 +9,11 @@ import MapView, {
 } from 'react-native-maps'
 enableLatestRenderer()
 import { SafeAreaView, StyleSheet } from 'react-native'
-import useLocation from '@/hooks/useLocation.android'
-import AppMenu from '@/ui/AppMenu'
-import { TripData as TD, Setting as S, RouteData } from '@/state/types'
-import { useData, usePersist } from '@/hooks'
-import { MapMeasureLine as MML } from '@/AppConstants'
+import useLocation from 'hooks/useLocation.android'
+import AppMenu from 'ui/AppMenu'
+import { TripData as TD, Setting as S, RouteData } from 'state/types'
+import { useData, usePersist } from 'hooks'
+import { MapMeasureLine as MML } from 'AppConstants'
 import {
   LockSwitch,
   MapRoute,
@@ -22,8 +22,8 @@ import {
   MapMeasureLine,
   DeleteDialog,
   DeleteTarget,
-} from '@/ui'
-import { Actions, pickAction, isValidStartCoord } from '@/utils/other'
+} from 'ui'
+import { Actions, pickAction, isValidStartCoord } from 'utils/other'
 
 function AppContent() {
   // 'enabled' = allowed by the user settings; 'active' = allowed by current app state

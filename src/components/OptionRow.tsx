@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Text } from 'react-native'
-import { AppColors } from '@/AppConstants'
+import { AppColors } from 'AppConstants'
 
 type OptionRowProps = {
   options: readonly string[]

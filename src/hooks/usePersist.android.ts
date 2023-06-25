@@ -1,7 +1,7 @@
 import { useContext } from 'react'
-import { DataContext } from '@/state/DataProvider'
-import { Persistable } from '@/state/types'
-import { Repo } from '@/state/Repository'
+import { DataContext } from 'state/DataProvider'
+import { Persistable } from 'state/types'
+import { Repo } from 'state/Repository'
 
 const usePersist = () => {
   const dataContext = useContext(DataContext)

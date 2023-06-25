@@ -2,9 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import { PermissionsAndroid, Platform } from 'react-native'
 import { LatLng } from 'react-native-maps'
 import Geolocation from 'react-native-geolocation-service'
-import { useData, useAppState } from '@/hooks'
-import { Setting as S } from '@/state/types'
-import { LocUpdateDistance, LocUpdateInterval } from '@/AppConstants'
+import { useData, useAppState } from 'hooks'
+import { Setting as S } from 'state/types'
+import { LocUpdateDistance, LocUpdateInterval } from 'AppConstants'
 
 type UseLocationProps = boolean
 

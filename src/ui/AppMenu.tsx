@@ -1,14 +1,14 @@
 import React, { useState } from 'react'
 import { View, StyleSheet } from 'react-native'
-import { Menu, MenuItem, UIButton, UISlider, ColorRow } from '@/components'
-import { MapTypeOptions } from '@/ui'
-import { useData } from '@/hooks'
-import { Setting as S, MAP_TYPES, MapType } from '@/state/types/'
+import { Menu, MenuItem, UIButton, UISlider, ColorRow } from 'components'
+import { MapTypeOptions } from 'ui'
+import { useData } from 'hooks'
+import { Setting as S, MAP_TYPES, MapType } from 'state/types/'
 import {
   MapRoute as MR,
   LocUpdateInterval as LocUI,
   LocUpdateDistance as LocUD,
-} from '@/AppConstants'
+} from 'AppConstants'
 
 type AppMenuProps = {
   onOpen: () => void

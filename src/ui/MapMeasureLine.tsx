@@ -2,10 +2,10 @@ import React from 'react'
 import { LatLng, MarkerDragStartEndEvent, Polyline } from 'react-native-maps'
 // NOTE: had to modify the library to export it; be careful with updates !!!
 import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
-import { MapMeasureLine as MML } from '@/AppConstants'
-import { MapMarker } from '@/ui'
-import { metersBetween } from '@/utils/calc'
-import { isValidStartCoord } from '@/utils/other'
+import { MapMeasureLine as MML } from 'AppConstants'
+import { MapMarker } from 'ui'
+import { metersBetween } from 'utils/calc'
+import { isValidStartCoord } from 'utils/other'
 
 type MapMeasureLineProps = {
   startCoord: LatLng | null

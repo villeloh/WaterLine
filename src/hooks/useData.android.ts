@@ -1,8 +1,8 @@
 import { useContext } from 'react'
-import { DataContext } from '@/state/DataProvider'
-import { Persistable, TypeMap } from '@/state/types'
-import { Repo } from '@/state/Repository'
-import { DEFAULT_APP_SETTINGS } from '@/AppConstants'
+import { DataContext } from 'state/DataProvider'
+import { Persistable, TypeMap } from 'state/types'
+import { Repo } from 'state/Repository'
+import { DEFAULT_APP_SETTINGS } from 'AppConstants'
 
 // a 'spiced up' useState that writes to the Repo as well as local state.
 // Works as a global datastore; a 'mini-Redux' of sorts

@@ -1,6 +1,6 @@
 import React from 'react'
-import { DataProvider } from '@/state/DataProvider'
-import AppContent from '@/AppContent'
+import { DataProvider } from 'state/DataProvider'
+import AppContent from 'AppContent'
 
 function App() {
   return (

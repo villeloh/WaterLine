@@ -2,7 +2,7 @@
 import React from 'react'
 import { View, Dimensions, Text, StyleSheet } from 'react-native'
 import { Region } from 'react-native-maps'
-import { latDeltaToScreenM } from '@/utils/calc'
+import { latDeltaToScreenM } from 'utils/calc'
 
 type MapScaleProps = {
   region: Region | null

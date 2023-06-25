@@ -6,10 +6,10 @@ import {
 } from 'react-native-maps'
 // NOTE: had to modify the library to export it; be careful with updates !!!
 import { PolylinePressEvent } from 'react-native-maps/lib/MapPolyline'
-import { MapRoute as MR, Marker } from '@/AppConstants'
-import { RouteData } from '@/state/types'
-import { MapMarker } from '@/ui'
-import { metersBetween } from '@/utils/calc'
+import { MapRoute as MR, Marker } from 'AppConstants'
+import { RouteData } from 'state/types'
+import { MapMarker } from 'ui'
+import { metersBetween } from 'utils/calc'
 
 type MapRouteProps = {
   isEditable: boolean

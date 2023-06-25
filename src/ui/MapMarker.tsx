@@ -7,7 +7,7 @@ import {
   MarkerPressEvent,
 } from 'react-native-maps'
 import { View, Text, StyleSheet } from 'react-native'
-import { Marker as M } from '@/AppConstants'
+import { Marker as M } from 'AppConstants'
 
 type MapMarkerProps = {
   id: string

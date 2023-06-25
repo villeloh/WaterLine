@@ -1,6 +1,6 @@
 import React from 'react'
-import { MAP_TYPES, MapType } from '@/state/types'
-import { OptionRow } from '@/components'
+import { MAP_TYPES, MapType } from 'state/types'
+import { OptionRow } from 'components'
 
 type MapTypeOptionsProps = {
   options: typeof MAP_TYPES

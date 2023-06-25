@@ -1,9 +1,9 @@
 import { LatLng, Region } from 'react-native-maps'
-import { Setting } from '@/state/types/Setting'
-import { TripData } from '@/state/types/TripData'
-import { Persistable, PersistableKeys } from '@/state/types/Persistable'
-import { MapType, MAP_TYPES } from '@/state/types/MapType'
-import RouteData from '@/state/model/RouteData'
+import { Setting } from 'state/types/Setting'
+import { TripData } from 'state/types/TripData'
+import { Persistable, PersistableKeys } from 'state/types/Persistable'
+import { MapType, MAP_TYPES } from 'state/types/MapType'
+import RouteData from 'state/model/RouteData'
 
 // TODO: figure out a way to get rid of this
 type TypeMap = {

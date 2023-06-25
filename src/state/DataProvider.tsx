@@ -1,7 +1,7 @@
 import React, { Dispatch, createContext, useReducer } from 'react'
-import { Repo } from '@/state/Repository'
-import { Persistable, PersistableKeys, TypeMap } from '@/state/types'
-import { useAppState } from '@/hooks'
+import { Repo } from 'state/Repository'
+import { Persistable, PersistableKeys, TypeMap } from 'state/types'
+import { useAppState } from 'hooks'
 
 // '?' signifies that the keys are optional
 type State = { [K in Persistable]?: TypeMap[K] }

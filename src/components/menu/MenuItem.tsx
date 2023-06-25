@@ -1,6 +1,6 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
-import { AppColors } from '@/AppConstants'
+import { AppColors } from 'AppConstants'
 
 type MenuItemProps = {
   title: string

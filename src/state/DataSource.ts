@@ -1,4 +1,4 @@
-import { Persistable, TypeMap } from '@/state/types'
+import { Persistable, TypeMap } from 'state/types'
 
 export type DataSource = {
   saveData: <T extends Persistable>(

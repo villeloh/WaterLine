@@ -1,6 +1,6 @@
-import { DataSource } from '@/state/DataSource'
-import AsyncStorageDS from '@/state/AsyncStorageDS'
-import { Persistable, TypeMap } from '@/state/types'
+import { DataSource } from 'state/DataSource'
+import AsyncStorageDS from 'state/AsyncStorageDS'
+import { Persistable, TypeMap } from 'state/types'
 
 class Repository {
   dataSource: DataSource
