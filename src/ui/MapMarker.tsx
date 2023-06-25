@@ -37,9 +37,7 @@ const MapMarker: React.FC<MapMarkerProps> = ({
   onPress,
 }) => {
   const distanceFromPrevText =
-    distanceFromPrev > 0
-      ? `From previous: ${formatDistance(distanceFromPrev)}`
-      : 'START'
+    distanceFromPrev > 0 ? `=> ${formatDistance(distanceFromPrev)}` : 'START'
   const totalDistanceText =
     totalDistance > 0 ? formatDistance(totalDistance) : 'START'
 
