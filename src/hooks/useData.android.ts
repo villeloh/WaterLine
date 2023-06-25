@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import { DataContext } from '@/state/DataProvider'
 import { Persistable, TypeMap } from '@/state/types'
 import { Repo } from '@/state/Repository'
-import { DEFAULT_VALUES } from '@/AppConstants'
+import { DEFAULT_APP_SETTINGS } from '@/AppConstants'
 
 // a 'spiced up' useState that writes to the Repo as well as local state.
 // Works as a global datastore; a 'mini-Redux' of sorts
@@ -32,7 +32,7 @@ const useData = <T extends Persistable>(
   }
 
   return [
-    state[key] ?? defaultValue ?? DEFAULT_VALUES[key],
+    state[key] ?? defaultValue ?? DEFAULT_APP_SETTINGS[key],
     setData,
     persistData,
   ]

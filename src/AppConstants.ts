@@ -60,7 +60,7 @@ export const Marker = {
 // TODO: sort out the different type variables etc; are all really needed ?
 // NOTE: it's arguable whether this should be defined here, but it's convenient and these values are constant for all intents and purposes
 type DefaultValues = { [K in keyof TypeMap]: TypeMap[K] }
-export const DEFAULT_VALUES: DefaultValues = {
+export const DEFAULT_APP_SETTINGS: DefaultValues = {
   [Setting.mapType]: DefaultMapType,
   [Setting.isMapLocked]: IsMapLocked.default,
   [Setting.isGeoLocEnabled]: false,
