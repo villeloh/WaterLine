@@ -5,6 +5,8 @@ import { Persistable, PersistableKeys } from 'state/types/Persistable'
 import { MapType, MAP_TYPES } from 'state/types/MapType'
 import RouteData from 'state/model/RouteData'
 
+// NOTE: 'types' folder should perhaps be moved out of 'state' folder
+
 // TODO: figure out a way to get rid of this
 type TypeMap = {
   [Setting.mapType]: MapType
