@@ -15,9 +15,9 @@ The route is persisted locally via AsyncStorage; in the future, multiple routes 
 You will need to obtain a google maps API key and put it under android/apikey.properties, with 'API_KEY="your-key"' inside it.
 Also, in android/local.properties, put:
 
-KEYSTORE_FILE=appkey.keystore
-APP_KEY_ALIAS=appkey
-KEYSTORE_PASSWORD=your-password
+KEYSTORE_FILE=appkey.keystore  
+APP_KEY_ALIAS=appkey  
+KEYSTORE_PASSWORD=your-password  
 APP_KEY_PASSWORD=your-password
 
 Then generate an APK and load it up on your Android phone.
